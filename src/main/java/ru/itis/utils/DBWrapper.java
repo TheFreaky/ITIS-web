@@ -27,7 +27,7 @@ public class DBWrapper {
 
     private Connection getLocalConnect() {
         final String DRIVER = "org.postgresql.Driver";
-        final String CONNECTION_URI = "jdbc:postgresql://localhost:5432/postgres";
+        final String CONNECTION_URI = "jdbc:postgresql://localhost:5432/gym-app";
         final String LOGIN = "postgres";
         final String PASSWORD = "lolxaxlol";
 

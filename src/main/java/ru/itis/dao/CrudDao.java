@@ -2,7 +2,7 @@ package ru.itis.dao;
 
 import java.util.List;
 
-public interface BaseDao<T, I> {
+public interface CrudDao<T, I> {
     void save(T model);
     T find(I id);
     void update(T model);

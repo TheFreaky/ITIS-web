@@ -45,7 +45,7 @@ public class SignInServlet extends HttpServlet {
         if (user != null && password.equals(user.getPassword())) {
             req.getSession().setAttribute("user", user);
             resp.sendRedirect(req.getContextPath() + "/users");
-        }  else {
+        } else {
             req.setAttribute("error", "Invalid login or password");
             req.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(req, resp);
         }

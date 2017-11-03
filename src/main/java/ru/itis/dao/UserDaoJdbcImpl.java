@@ -1,5 +1,6 @@
 package ru.itis.dao;
 
+import ru.itis.entity.Specialization;
 import ru.itis.entity.User;
 
 import java.sql.*;
@@ -7,15 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJdbcImpl implements UserDao {
-
     private Connection connection;
 
-    private final static String SQL_INSERT = "INSERT INTO users (email, password, sex, country, news_subscription) VALUES (?, ?, ?, ?, ?)";
+    private final static String SQL_INSERT = "INSERT INTO users (login, password, name, weight, height, specialization," +
+            " xp, strength, stamina, flexibility, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final static String SQL_SELECT_ALL = "SELECT * FROM users";
-    private final static String SQL_SELECT_BY_LOGIN = "SELECT * FROM users WHERE email = ?";
+    private final static String SQL_SELECT_BY_LOGIN = "SELECT * FROM users WHERE login = ?";
     private final static String SQL_SELECT_BY_ID = "SELECT * FROM users WHERE id = ?";
     private final static String SQL_UPDATE = "UPDATE users SET " +
-            "(email, password, sex, country, news_subscription) = (?, ?, ?, ?, ?) WHERE id = ?";
+            "(login, password, name, weight, height, specialization," +
+            " xp, strength, stamina, flexibility, gender) = (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?";
     private final static String SQL_DELETE = "DELETE FROM users WHERE id = ?";
 
     public UserDaoJdbcImpl(Connection connection) {
@@ -28,11 +30,21 @@ public class UserDaoJdbcImpl implements UserDao {
             PreparedStatement stmt =
                     connection.prepareStatement(SQL_INSERT,
                             Statement.RETURN_GENERATED_KEYS);
-            stmt.setString(1, model.getEmail());
+            stmt.setString(1, model.getLogin());
             stmt.setString(2, model.getPassword());
-            stmt.setString(3, model.getSex());
-            stmt.setString(4, model.getCountry());
-            stmt.setBoolean(5, model.getNewsSubscription());
+            stmt.setString(3, model.getName());
+            stmt.setObject(4, model.getWeight());
+            stmt.setObject(5, model.getHeight());
+            if (model.getSpecialization() != null) {
+                stmt.setObject(6, model.getSpecialization().toString());
+            } else {
+                stmt.setObject(6, model.getSpecialization());
+            }
+            stmt.setObject(7, model.getXp());
+            stmt.setObject(8, model.getStrength());
+            stmt.setObject(9, model.getStamina());
+            stmt.setObject(10, model.getFlexibility());
+            stmt.setObject(11, model.getGender());
             stmt.executeUpdate();
 
             ResultSet resultSet = stmt.getGeneratedKeys();
@@ -41,6 +53,9 @@ public class UserDaoJdbcImpl implements UserDao {
                 model.setId(id);
             }
         } catch (SQLException e) {
+            if (e.getSQLState().startsWith("23")) { //integrity constraint violation
+                throw new IllegalArgumentException("Xp can't be less than zero.");
+            }
             throw new IllegalArgumentException(e);
         }
     }
@@ -52,15 +67,28 @@ public class UserDaoJdbcImpl implements UserDao {
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
 
-            rs.next();
+            if (!rs.next()) {
+                return null;
+            }
+
+            Specialization specialization = null;
+            if (rs.getString("specialization") != null) {
+                specialization = Specialization.valueOf(rs.getString("specialization"));
+            }
 
             return User.builder()
                     .id(rs.getLong("id"))
-                    .email(rs.getString("email"))
+                    .login(rs.getString("login"))
                     .password(rs.getString("password"))
-                    .sex(rs.getString("sex"))
-                    .country(rs.getString("country"))
-                    .newsSubscription(rs.getBoolean("news_subscription"))
+                    .name(rs.getString("name"))
+                    .weight(rs.getFloat("weight"))
+                    .height(rs.getShort("height"))
+                    .specialization(specialization)
+                    .xp(rs.getInt("xp"))
+                    .strength(rs.getShort("strength"))
+                    .stamina(rs.getShort("stamina"))
+                    .flexibility(rs.getShort("flexibility"))
+                    .gender(rs.getBoolean("gender"))
                     .build();
 
         } catch (SQLException e) {
@@ -73,11 +101,22 @@ public class UserDaoJdbcImpl implements UserDao {
         try {
             PreparedStatement stmt =
                     connection.prepareStatement(SQL_UPDATE);
-            stmt.setString(1, model.getEmail());
+            stmt.setString(1, model.getLogin());
             stmt.setString(2, model.getPassword());
-            stmt.setString(3, model.getSex());
-            stmt.setString(4, model.getCountry());
-            stmt.setBoolean(5, model.getNewsSubscription());
+            stmt.setString(3, model.getName());
+            stmt.setObject(4, model.getWeight());
+            stmt.setObject(5, model.getHeight());
+            if (model.getSpecialization() != null) {
+                stmt.setObject(6, model.getSpecialization().toString());
+            } else {
+                stmt.setObject(6, model.getSpecialization());
+            }
+            stmt.setObject(7, model.getXp());
+            stmt.setObject(8, model.getStrength());
+            stmt.setObject(9, model.getStamina());
+            stmt.setObject(10, model.getFlexibility());
+            stmt.setObject(11, model.getGender());
+            stmt.setLong(12, model.getId());
             stmt.execute();
         } catch (SQLException e) {
             throw new IllegalArgumentException(e);
@@ -104,14 +143,24 @@ public class UserDaoJdbcImpl implements UserDao {
 
             List<User> users = new ArrayList<>();
             while (rs.next()) {
+                Specialization specialization = null;
+                if (rs.getString("specialization") != null) {
+                    specialization = Specialization.valueOf(rs.getString("specialization"));
+                }
                 users.add(
                         User.builder()
                                 .id(rs.getLong("id"))
-                                .email(rs.getString("email"))
+                                .login(rs.getString("login"))
                                 .password(rs.getString("password"))
-                                .sex(rs.getString("sex"))
-                                .country(rs.getString("country"))
-                                .newsSubscription(rs.getBoolean("news_subscription"))
+                                .name(rs.getString("name"))
+                                .weight(rs.getFloat("weight"))
+                                .height(rs.getShort("height"))
+                                .specialization(specialization)
+                                .xp(rs.getInt("xp"))
+                                .strength(rs.getShort("strength"))
+                                .stamina(rs.getShort("stamina"))
+                                .flexibility(rs.getShort("flexibility"))
+                                .gender(rs.getBoolean("gender"))
                                 .build()
                 );
             }
@@ -130,14 +179,26 @@ public class UserDaoJdbcImpl implements UserDao {
             stmt.setString(1, login);
             ResultSet rs = stmt.executeQuery();
 
-            rs.next();
+            if (!rs.next()) {
+                return null;
+            }
+            Specialization specialization = null;
+            if (rs.getString("specialization") != null) {
+                specialization = Specialization.valueOf(rs.getString("specialization"));
+            }
             return User.builder()
                     .id(rs.getLong("id"))
-                    .email(rs.getString("email"))
+                    .login(rs.getString("login"))
                     .password(rs.getString("password"))
-                    .sex(rs.getString("sex"))
-                    .country(rs.getString("country"))
-                    .newsSubscription(rs.getBoolean("news_subscription"))
+                    .name(rs.getString("name"))
+                    .weight(rs.getFloat("weight"))
+                    .height(rs.getShort("height"))
+                    .specialization(specialization)
+                    .xp(rs.getInt("xp"))
+                    .strength(rs.getShort("strength"))
+                    .stamina(rs.getShort("stamina"))
+                    .flexibility(rs.getShort("flexibility"))
+                    .gender(rs.getBoolean("gender"))
                     .build();
         } catch (SQLException e) {
             throw new IllegalArgumentException(e);

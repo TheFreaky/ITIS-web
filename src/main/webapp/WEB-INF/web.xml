@@ -23,36 +23,16 @@
         <url-pattern>/signin</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>UsersServlet</servlet-name>
-        <servlet-class>ru.itis.servlets.UsersServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>UsersServlet</servlet-name>
-        <url-pattern>/users</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>cookie</servlet-name>
-        <servlet-class>ru.itis.servlets.CookieSetServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>cookie</servlet-name>
-        <url-pattern>/cookie</url-pattern>
-    </servlet-mapping>
-
-    <filter>
-        <filter-name>UserFilter</filter-name>
-        <filter-class>ru.itis.filter.UserFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>UserFilter</filter-name>
-        <servlet-name>UsersServlet</servlet-name>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>UserFilter</filter-name>
-        <servlet-name>cookie</servlet-name>
-    </filter-mapping>
+    <!--<filter>-->
+        <!--<filter-name>UserFilter</filter-name>-->
+        <!--<filter-class>ru.itis.filter.UserFilter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>UserFilter</filter-name>-->
+        <!--<servlet-name>UsersServlet</servlet-name>-->
+    <!--</filter-mapping>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>UserFilter</filter-name>-->
+        <!--<servlet-name>cookie</servlet-name>-->
+    <!--</filter-mapping>-->
 </web-app>

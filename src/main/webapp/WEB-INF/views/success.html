@@ -2,9 +2,26 @@
 <html>
 <head>
     <title>Sign Up</title>
+    <script>
+        function createDiv() {
+            var div = document.createElement("div");
+            div.setAttribute("id", "my-div");
+            div.appendChild(document.createTextNode("I was added."));
+            var addBtn = document.getElementById("add-btn");
+            document.body.insertBefore(div, addBtn);
+        }
+
+        function deleteDiv() {
+            document.getElementById('my-div').remove();
+        }
+    </script>
 </head>
 
 <body>
 <h2>You successfully registered!</h2>
+
+<button class="add-btn" onclick="createDiv()">Add</button>
+<button onclick="deleteDiv()">Remove</button>
+
 </body>
 </html>

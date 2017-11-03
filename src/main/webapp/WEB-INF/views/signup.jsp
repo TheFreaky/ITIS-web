@@ -7,10 +7,10 @@
     <meta charset="UTF-8">
     <title>Sign Up</title>
 
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="<c:url value="/js/jquery.js"/>"></script>
+    <script src="<c:url value="/js/bootstrap.min.js" />"></script>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="<c:url value="/css/bootstrap.min.css" />" rel="stylesheet">
 </head>
 <body>
 <div class="reg-block">
