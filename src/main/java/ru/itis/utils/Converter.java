@@ -1,7 +1,5 @@
 package ru.itis.utils;
 
-import ru.itis.entity.User;
-
 /**
  * 11.10.2017
  *

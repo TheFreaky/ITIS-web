@@ -3,9 +3,9 @@ package ru.itis.dao;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import ru.itis.entity.Training;
-import ru.itis.entity.User;
-import ru.itis.entity.UserTraining;
+import ru.itis.models.Training;
+import ru.itis.models.User;
+import ru.itis.models.UserTraining;
 import ru.itis.utils.DBWrapper;
 
 import java.sql.Connection;
@@ -51,7 +51,6 @@ public class UserTrainingDaoJdbcImplTest {
     public void save() throws Exception {
         UserTraining userTraining = UserTraining.builder()
                 .date(LocalDate.now())
-                .calories(10f)
                 .user(user)
                 .training(Training.builder()
                         .id(1)
@@ -67,7 +66,6 @@ public class UserTrainingDaoJdbcImplTest {
         UserTraining userTraining = userTrainingDao.find(1);
         assertNotNull(userTraining);
         assertNotNull(userTraining.getId());
-        assertNotNull(userTraining.getCalories());
         assertNotNull(userTraining.getDate());
         assertNotNull(userTraining.getTraining());
         assertNotNull(userTraining.getTraining().getId());
@@ -81,26 +79,28 @@ public class UserTrainingDaoJdbcImplTest {
     public void update() throws Exception {
         UserTraining userTraining = UserTraining.builder()
                 .date(LocalDate.now())
-                .calories(10f)
                 .user(user)
                 .training(Training.builder()
                         .id(2)
                         .build())
                 .build();
         userTrainingDao.save(userTraining);
-        userTraining.setCalories(11f);
+
+        LocalDate date = LocalDate.of(2017, 1, 2);
+        userTraining.setDate(date);
         userTrainingDao.update(userTraining);
-        assertNotNull(userTraining);
-        assertNotNull(userTraining.getId());
-        assertNotNull(userTraining.getCalories());
-        assertTrue(userTraining.getCalories() == 11f);
+
+        UserTraining updated = userTrainingDao.find(userTraining.getId());
+        assertNotNull(updated);
+        assertNotNull(updated.getId());
+        assertNotNull(updated.getDate());
+        assertTrue(updated.getDate().equals(date));
     }
 
     @Test
     public void delete() throws Exception {
         UserTraining userTraining = UserTraining.builder()
                 .date(LocalDate.now())
-                .calories(100f)
                 .user(user)
                 .training(Training.builder()
                         .id(3)
@@ -124,7 +124,6 @@ public class UserTrainingDaoJdbcImplTest {
     public void findByUser() throws Exception {
         UserTraining userTraining = UserTraining.builder()
                 .date(LocalDate.now())
-                .calories(105f)
                 .user(user)
                 .training(Training.builder()
                         .id(4)

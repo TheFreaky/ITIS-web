@@ -2,7 +2,7 @@ package ru.itis.servlets;
 
 import ru.itis.dao.UserDao;
 import ru.itis.dao.UserDaoJdbcImpl;
-import ru.itis.entity.User;
+import ru.itis.models.User;
 import ru.itis.utils.DBWrapper;
 
 import javax.servlet.RequestDispatcher;
@@ -10,10 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 07.10.2017

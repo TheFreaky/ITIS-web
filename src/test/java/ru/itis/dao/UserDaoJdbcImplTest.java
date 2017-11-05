@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import ru.itis.entity.Specialization;
-import ru.itis.entity.User;
+import ru.itis.models.Specialization;
+import ru.itis.models.User;
 import ru.itis.utils.DBWrapper;
 
 import java.util.List;

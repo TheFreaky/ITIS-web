@@ -1,9 +1,9 @@
 package ru.itis.dao;
 
-import ru.itis.entity.Complexity;
-import ru.itis.entity.Exercise;
-import ru.itis.entity.Specialization;
-import ru.itis.entity.Training;
+import ru.itis.models.Complexity;
+import ru.itis.models.Exercise;
+import ru.itis.models.Specialization;
+import ru.itis.models.Training;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -25,19 +25,19 @@ public class TrainingDaoJdbcImpl implements TrainingDao {
     }
 
     private final static String SQL_INSERT = "INSERT INTO trainings (training_name, training_description, " +
-            "training_xp, training_min_lvl) VALUES (?, ?, ?, ?)";
+            "training_xp, training_min_lvl, training_complexity, training_type) VALUES (?, ?, ?, ?, ?, ?)";
     private final static String SQL_SELECT_ALL = "SELECT t.*, e.* FROM trainings AS t " +
             "LEFT JOIN trainings_exercises AS te ON t.training_id = te.training_id " +
             "LEFT JOIN exercises AS e ON e.exercise_id = te.exercise_id;";
     private final static String SQL_SELECT_BY_ID = "SELECT t.*, e.* FROM trainings AS t " +
             "LEFT JOIN trainings_exercises AS te ON t.training_id = te.training_id " +
             "LEFT JOIN exercises AS e ON e.exercise_id = te.exercise_id WHERE t.training_id = ?;";
+    private final static String SQL_UPDATE = "UPDATE trainings SET (training_name, training_description, " +
+            "training_xp, training_min_lvl, training_complexity, training_type) = (?, ?, ?, ?, ?, ?) WHERE training_id = ?";
+    private final static String SQL_DELETE = "DELETE FROM trainings WHERE training_id = ?";
     private final static String SQL_SELECT_BY_NAME = "SELECT t.*, e.* FROM trainings AS t " +
             "LEFT JOIN trainings_exercises AS te ON t.training_id = te.training_id " +
             "LEFT JOIN exercises AS e ON e.exercise_id = te.exercise_id WHERE training_name = ?;";
-    private final static String SQL_UPDATE = "UPDATE trainings SET (training_name, training_description, " +
-            "training_xp, training_min_lvl) = (?, ?, ?, ?) WHERE training_id = ?";
-    private final static String SQL_DELETE = "DELETE FROM trainings WHERE training_id = ?";
 
     @Override
     public void save(Training model) {
@@ -49,6 +49,16 @@ public class TrainingDaoJdbcImpl implements TrainingDao {
             stmt.setObject(2, model.getDescription());
             stmt.setObject(3, model.getXp());
             stmt.setObject(4, model.getMinLvl());
+            if (model.getComplexity() != null) {
+                stmt.setObject(5, model.getComplexity().toString());
+            } else {
+                stmt.setObject(5, model.getComplexity());
+            }
+            if (model.getType() != null) {
+                stmt.setObject(6, model.getType().toString());
+            } else {
+                stmt.setObject(6, model.getType());
+            }
             stmt.executeUpdate();
 
             ResultSet resultSet = stmt.getGeneratedKeys();
@@ -65,41 +75,8 @@ public class TrainingDaoJdbcImpl implements TrainingDao {
     public Training find(Integer id) {
         try {
             PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_BY_ID);
-            stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
-
-            Set<Exercise> exercises = new HashSet<>();
-            Training training = null;
-
-            while (rs.next()) {
-                if (training == null) {
-                    training = Training.builder()
-                            .id(rs.getInt("training_id"))
-                            .name(rs.getString("training_name"))
-                            .description(rs.getString("training_description"))
-                            .xp(rs.getInt("training_xp"))
-                            .minLvl(rs.getShort("training_min_lvl"))
-                            .exercises(exercises)
-                            .build();
-                }
-
-                Specialization specialization = null;
-                if (rs.getString("exercise_type") != null) {
-                    specialization = Specialization.valueOf(rs.getString("exercise_type"));
-                }
-
-                Complexity complexity = null;
-                if (rs.getString("exercise_complexity") != null) {
-                    complexity = Complexity.valueOf(rs.getString("exercise_complexity"));
-                }
-                exercises.add(Exercise.builder()
-                        .id(rs.getInt("exercise_id"))
-                        .name(rs.getString("exercise_name"))
-                        .complexity(complexity)
-                        .type(specialization)
-                        .build());
-            }
-            return training;
+            stmt.setInt(1, id);
+            return find(stmt.executeQuery());
         } catch (SQLException e) {
             throw new IllegalArgumentException(e);
         }
@@ -114,7 +91,17 @@ public class TrainingDaoJdbcImpl implements TrainingDao {
             stmt.setObject(2, model.getDescription());
             stmt.setObject(3, model.getXp());
             stmt.setObject(4, model.getMinLvl());
-            stmt.setLong(5, model.getId());
+            if (model.getComplexity() != null) {
+                stmt.setObject(5, model.getComplexity().toString());
+            } else {
+                stmt.setObject(5, model.getComplexity());
+            }
+            if (model.getType() != null) {
+                stmt.setObject(6, model.getType().toString());
+            } else {
+                stmt.setObject(6, model.getType());
+            }
+            stmt.setLong(7, model.getId());
             stmt.execute();
         } catch (SQLException e) {
             throw new IllegalArgumentException(e);
@@ -144,6 +131,17 @@ public class TrainingDaoJdbcImpl implements TrainingDao {
             while (rs.next()) {
                 if (lastId != rs.getInt("training_id")) {
                     lastId = rs.getInt("training_id");
+
+                    Specialization specialization = null;
+                    if (rs.getString("training_type") != null) {
+                        specialization = Specialization.valueOf(rs.getString("training_type"));
+                    }
+
+                    Complexity complexity = null;
+                    if (rs.getString("training_complexity") != null) {
+                        complexity = Complexity.valueOf(rs.getString("training_complexity"));
+                    }
+
                     trainings.add(
                             Training.builder()
                                     .id(lastId)
@@ -152,25 +150,16 @@ public class TrainingDaoJdbcImpl implements TrainingDao {
                                     .xp(rs.getInt("training_xp"))
                                     .minLvl(rs.getShort("training_min_lvl"))
                                     .exercises(new HashSet<>())
+                                    .complexity(complexity)
+                                    .type(specialization)
                                     .build());
                 }
 
                 if (rs.getInt("exercise_id") == 0) continue;
 
-                Specialization specialization = null;
-                if (rs.getString("exercise_type") != null) {
-                    specialization = Specialization.valueOf(rs.getString("exercise_type"));
-                }
-
-                Complexity complexity = null;
-                if (rs.getString("exercise_complexity") != null) {
-                    complexity = Complexity.valueOf(rs.getString("exercise_complexity"));
-                }
                 trainings.get(trainings.size() - 1).getExercises().add(Exercise.builder()
                         .id(rs.getInt("exercise_id"))
                         .name(rs.getString("exercise_name"))
-                        .complexity(complexity)
-                        .type(specialization)
                         .build());
             }
             return trainings;
@@ -182,16 +171,32 @@ public class TrainingDaoJdbcImpl implements TrainingDao {
     @Override
     public Training findByName(String name) {
         try {
-            PreparedStatement stmt =
-                    connection.prepareStatement(SQL_SELECT_BY_NAME);
+            PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_BY_NAME);
             stmt.setString(1, name);
-            ResultSet rs = stmt.executeQuery();
+            return find(stmt.executeQuery());
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    private Training find(ResultSet rs) {
+        try {
 
             Set<Exercise> exercises = new HashSet<>();
             Training training = null;
 
             while (rs.next()) {
                 if (training == null) {
+                    Specialization specialization = null;
+                    if (rs.getString("training_type") != null) {
+                        specialization = Specialization.valueOf(rs.getString("training_type"));
+                    }
+
+                    Complexity complexity = null;
+                    if (rs.getString("training_complexity") != null) {
+                        complexity = Complexity.valueOf(rs.getString("training_complexity"));
+                    }
+
                     training = Training.builder()
                             .id(rs.getInt("training_id"))
                             .name(rs.getString("training_name"))
@@ -199,23 +204,14 @@ public class TrainingDaoJdbcImpl implements TrainingDao {
                             .xp(rs.getInt("training_xp"))
                             .minLvl(rs.getShort("training_min_lvl"))
                             .exercises(exercises)
+                            .type(specialization)
+                            .complexity(complexity)
                             .build();
                 }
 
-                Specialization specialization = null;
-                if (rs.getString("exercise_type") != null) {
-                    specialization = Specialization.valueOf(rs.getString("exercise_type"));
-                }
-
-                Complexity complexity = null;
-                if (rs.getString("exercise_complexity") != null) {
-                    complexity = Complexity.valueOf(rs.getString("exercise_complexity"));
-                }
                 exercises.add(Exercise.builder()
                         .id(rs.getInt("exercise_id"))
                         .name(rs.getString("exercise_name"))
-                        .complexity(complexity)
-                        .type(specialization)
                         .build());
             }
             return training;

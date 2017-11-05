@@ -1,9 +1,11 @@
-package ru.itis.entity;
+package ru.itis.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 /**
  * 26.10.2017
@@ -15,9 +17,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Exercise {
+public class UserTraining {
     private Integer id;
-    private String name;
-    private Complexity complexity;
-    private Specialization type;
+    private LocalDate date;
+    private User user;
+    private Training training;
 }

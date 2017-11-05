@@ -1,8 +1,9 @@
 package ru.itis.service;
 
-import ru.itis.entity.User;
+import ru.itis.models.User;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

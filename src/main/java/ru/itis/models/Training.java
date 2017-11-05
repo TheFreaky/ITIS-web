@@ -1,8 +1,7 @@
-package ru.itis.entity;
+package ru.itis.models;
 
 import lombok.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -23,5 +22,7 @@ public class Training {
     private String description;
     private Integer xp;
     private Short minLvl;
+    private Complexity complexity;
+    private Specialization type;
     private Set<Exercise> exercises;
 }

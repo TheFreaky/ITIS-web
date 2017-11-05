@@ -1,6 +1,6 @@
 package ru.itis.dao;
 
-import ru.itis.entity.UserTraining;
+import ru.itis.models.UserTraining;
 
 import java.util.List;
 

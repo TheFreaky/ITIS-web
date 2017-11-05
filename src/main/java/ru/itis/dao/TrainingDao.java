@@ -1,6 +1,6 @@
 package ru.itis.dao;
 
-import ru.itis.entity.Training;
+import ru.itis.models.Training;
 
 /**
  * 01.11.2017

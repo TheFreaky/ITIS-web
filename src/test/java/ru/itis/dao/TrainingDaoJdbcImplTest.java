@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import ru.itis.entity.Training;
+import ru.itis.models.Training;
 import ru.itis.utils.DBWrapper;
 
 import java.util.List;

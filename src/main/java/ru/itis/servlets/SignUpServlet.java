@@ -2,7 +2,7 @@ package ru.itis.servlets;
 
 import ru.itis.dao.UserDao;
 import ru.itis.dao.UserDaoJdbcImpl;
-import ru.itis.entity.User;
+import ru.itis.models.User;
 import ru.itis.service.UserValidator;
 import ru.itis.service.Validator;
 import ru.itis.utils.DBWrapper;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
 
 /**
  * 25.09.2017

@@ -1,7 +1,7 @@
 package ru.itis.dao;
 
-import ru.itis.entity.User;
-import ru.itis.entity.UserTraining;
+import ru.itis.models.User;
+import ru.itis.models.UserTraining;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,13 +18,13 @@ public class UserTrainingDaoJdbcImpl implements UserTrainingDao {
     private TrainingDao trainingDao;
     private UserDao userDao;
 
-    private final static String SQL_INSERT = "INSERT INTO users_trainings (user_id, training_id, date, calories) " +
-            "VALUES (?, ?, ?, ?)";
+    private final static String SQL_INSERT = "INSERT INTO users_trainings (user_id, training_id, date) " +
+            "VALUES (?, ?, ?)";
     private final static String SQL_SELECT_ALL = "SELECT * FROM users_trainings";
     private final static String SQL_SELECT_BY_USER = "SELECT * FROM users_trainings WHERE user_id = ?";
     private final static String SQL_SELECT_BY_ID = "SELECT * FROM users_trainings WHERE id = ?";
-    private final static String SQL_UPDATE = "UPDATE users_trainings SET (user_id, training_id, date, calories) = " +
-            "(?, ?, ?, ?) WHERE id = ?";
+    private final static String SQL_UPDATE = "UPDATE users_trainings SET (user_id, training_id, date) = " +
+            "(?, ?, ?) WHERE id = ?";
     private final static String SQL_DELETE = "DELETE FROM users_trainings WHERE id = ?";
 
     public UserTrainingDaoJdbcImpl(Connection connection, TrainingDao trainingDao, UserDao userDao) {
@@ -47,10 +47,9 @@ public class UserTrainingDaoJdbcImpl implements UserTrainingDao {
             if (model.getTraining() != null) {
                 stmt.setInt(2, model.getTraining().getId());
             } else {
-                stmt.setObject(1, null);
+                stmt.setObject(2, null);
             }
             stmt.setDate(3, Date.valueOf(model.getDate()));
-            stmt.setFloat(4, model.getCalories());
             stmt.executeUpdate();
 
             ResultSet resultSet = stmt.getGeneratedKeys();
@@ -77,7 +76,6 @@ public class UserTrainingDaoJdbcImpl implements UserTrainingDao {
             return UserTraining.builder()
                     .id(rs.getInt("id"))
                     .date(rs.getDate("date").toLocalDate())
-                    .calories(rs.getFloat("calories"))
                     .user(userDao.find(rs.getLong("user_id")))
                     .training(trainingDao.find(rs.getInt("training_id")))
                     .build();
@@ -95,8 +93,7 @@ public class UserTrainingDaoJdbcImpl implements UserTrainingDao {
             stmt.setLong(1, model.getUser().getId());
             stmt.setInt(2, model.getTraining().getId());
             stmt.setDate(3, Date.valueOf(model.getDate()));
-            stmt.setFloat(4, model.getCalories());
-            stmt.setInt(5, model.getId());
+            stmt.setInt(4, model.getId());
             stmt.execute();
         } catch (SQLException e) {
             throw new IllegalArgumentException(e);
@@ -127,7 +124,6 @@ public class UserTrainingDaoJdbcImpl implements UserTrainingDao {
                         UserTraining.builder()
                                 .id(rs.getInt("id"))
                                 .date(rs.getDate("date").toLocalDate())
-                                .calories(rs.getFloat("calories"))
                                 .user(userDao.find(rs.getLong("user_id")))
                                 .training(trainingDao.find(rs.getInt("training_id")))
                                 .build()
@@ -157,7 +153,6 @@ public class UserTrainingDaoJdbcImpl implements UserTrainingDao {
                         UserTraining.builder()
                                 .id(rs.getInt("id"))
                                 .date(rs.getDate("date").toLocalDate())
-                                .calories(rs.getFloat("calories"))
                                 .user(user)
                                 .training(trainingDao.find(rs.getInt("training_id")))
                                 .build()

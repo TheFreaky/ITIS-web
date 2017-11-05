@@ -1,7 +1,7 @@
 package ru.itis.dao;
 
-import ru.itis.entity.Specialization;
-import ru.itis.entity.User;
+import ru.itis.models.Specialization;
+import ru.itis.models.User;
 
 import java.sql.*;
 import java.util.ArrayList;

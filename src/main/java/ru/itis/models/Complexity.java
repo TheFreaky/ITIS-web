@@ -1,4 +1,4 @@
-package ru.itis.entity;
+package ru.itis.models;
 
 /**
  * 30.10.2017

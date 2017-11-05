@@ -1,9 +1,8 @@
-package ru.itis.entity;
+package ru.itis.models;
 
-import lombok.*;
-
-import java.util.HashSet;
-import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
 /**
  * 26.10.2017
