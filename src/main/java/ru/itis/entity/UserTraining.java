@@ -21,6 +21,6 @@ public class UserTraining {
     private Integer id;
     private LocalDate date;
     private Float calories;
-    private User users;
-    private Training trainings;
+    private User user;
+    private Training training;
 }

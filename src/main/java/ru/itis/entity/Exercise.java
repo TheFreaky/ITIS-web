@@ -1,9 +1,9 @@
 package ru.itis.entity;
 
-import lombok.*;
-
-import java.util.HashSet;
-import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 26.10.2017
@@ -20,8 +20,4 @@ public class Exercise {
     private String name;
     private Complexity complexity;
     private Specialization type;
-    private String description;
-    private String instruction;
-    private String fails;
-    private String resource;
 }

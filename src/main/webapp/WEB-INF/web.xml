@@ -24,15 +24,15 @@
     </servlet-mapping>
 
     <!--<filter>-->
-        <!--<filter-name>UserFilter</filter-name>-->
+        <!--<filnamename>UserFilter</filnamename>-->
         <!--<filter-class>ru.itis.filter.UserFilter</filter-class>-->
     <!--</filter>-->
     <!--<filter-mapping>-->
-        <!--<filter-name>UserFilter</filter-name>-->
-        <!--<servlet-name>UsersServlet</servlet-name>-->
+        <!--<filnamename>UserFilter</filnamename>-->
+        <!--<servnamename>UsersServlet</servnamename>-->
     <!--</filter-mapping>-->
     <!--<filter-mapping>-->
-        <!--<filter-name>UserFilter</filter-name>-->
-        <!--<servlet-name>cookie</servlet-name>-->
+        <!--<filnamename>UserFilter</filnamename>-->
+        <!--<servnamename>cookie</servnamename>-->
     <!--</filter-mapping>-->
 </web-app>

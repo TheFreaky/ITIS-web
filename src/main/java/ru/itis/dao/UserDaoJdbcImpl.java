@@ -10,15 +10,16 @@ import java.util.List;
 public class UserDaoJdbcImpl implements UserDao {
     private Connection connection;
 
-    private final static String SQL_INSERT = "INSERT INTO users (login, password, name, weight, height, specialization," +
-            " xp, strength, stamina, flexibility, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final static String SQL_INSERT = "INSERT INTO users (user_login, user_password, user_name, user_weight, " +
+            "user_height, user_specialization, user_xp, user_strength, user_stamina, user_flexibility, user_gender) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final static String SQL_SELECT_ALL = "SELECT * FROM users";
-    private final static String SQL_SELECT_BY_LOGIN = "SELECT * FROM users WHERE login = ?";
-    private final static String SQL_SELECT_BY_ID = "SELECT * FROM users WHERE id = ?";
-    private final static String SQL_UPDATE = "UPDATE users SET " +
-            "(login, password, name, weight, height, specialization," +
-            " xp, strength, stamina, flexibility, gender) = (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?";
-    private final static String SQL_DELETE = "DELETE FROM users WHERE id = ?";
+    private final static String SQL_SELECT_BY_LOGIN = "SELECT * FROM users WHERE user_login = ?";
+    private final static String SQL_SELECT_BY_ID = "SELECT * FROM users WHERE user_id = ?";
+    private final static String SQL_UPDATE = "UPDATE users SET (user_login, user_password, user_name, user_weight, " +
+            "user_height, user_specialization, user_xp, user_strength, user_stamina, user_flexibility, user_gender) = " +
+            "(?, ?, ?, ?, ?, ?::specialization, ?, ?, ?, ?, ?) WHERE user_id = ?";
+    private final static String SQL_DELETE = "DELETE FROM users WHERE user_id = ?";
 
     public UserDaoJdbcImpl(Connection connection) {
         this.connection = connection;
@@ -36,7 +37,7 @@ public class UserDaoJdbcImpl implements UserDao {
             stmt.setObject(4, model.getWeight());
             stmt.setObject(5, model.getHeight());
             if (model.getSpecialization() != null) {
-                stmt.setObject(6, model.getSpecialization().toString());
+                stmt.setString(6, model.getSpecialization().toString());
             } else {
                 stmt.setObject(6, model.getSpecialization());
             }
@@ -49,12 +50,12 @@ public class UserDaoJdbcImpl implements UserDao {
 
             ResultSet resultSet = stmt.getGeneratedKeys();
             if (resultSet.next()) {
-                Long id = resultSet.getLong("id");
+                Long id = resultSet.getLong("user_id");
                 model.setId(id);
             }
         } catch (SQLException e) {
             if (e.getSQLState().startsWith("23")) { //integrity constraint violation
-                throw new IllegalArgumentException("Xp can't be less than zero.");
+                throw new IllegalArgumentException("Xp can't be less than zero.", e);
             }
             throw new IllegalArgumentException(e);
         }
@@ -72,23 +73,23 @@ public class UserDaoJdbcImpl implements UserDao {
             }
 
             Specialization specialization = null;
-            if (rs.getString("specialization") != null) {
-                specialization = Specialization.valueOf(rs.getString("specialization"));
+            if (rs.getString("user_specialization") != null) {
+                specialization = Specialization.valueOf(rs.getString("user_specialization"));
             }
 
             return User.builder()
-                    .id(rs.getLong("id"))
-                    .login(rs.getString("login"))
-                    .password(rs.getString("password"))
-                    .name(rs.getString("name"))
-                    .weight(rs.getFloat("weight"))
-                    .height(rs.getShort("height"))
+                    .id(rs.getLong("user_id"))
+                    .login(rs.getString("user_login"))
+                    .password(rs.getString("user_password"))
+                    .name(rs.getString("user_name"))
+                    .weight(rs.getFloat("user_weight"))
+                    .height(rs.getShort("user_height"))
                     .specialization(specialization)
-                    .xp(rs.getInt("xp"))
-                    .strength(rs.getShort("strength"))
-                    .stamina(rs.getShort("stamina"))
-                    .flexibility(rs.getShort("flexibility"))
-                    .gender(rs.getBoolean("gender"))
+                    .xp(rs.getInt("user_xp"))
+                    .strength(rs.getShort("user_strength"))
+                    .stamina(rs.getShort("user_stamina"))
+                    .flexibility(rs.getShort("user_flexibility"))
+                    .gender(rs.getBoolean("user_gender"))
                     .build();
 
         } catch (SQLException e) {
@@ -107,7 +108,7 @@ public class UserDaoJdbcImpl implements UserDao {
             stmt.setObject(4, model.getWeight());
             stmt.setObject(5, model.getHeight());
             if (model.getSpecialization() != null) {
-                stmt.setObject(6, model.getSpecialization().toString());
+                stmt.setString(6, model.getSpecialization().toString());
             } else {
                 stmt.setObject(6, model.getSpecialization());
             }
@@ -144,23 +145,23 @@ public class UserDaoJdbcImpl implements UserDao {
             List<User> users = new ArrayList<>();
             while (rs.next()) {
                 Specialization specialization = null;
-                if (rs.getString("specialization") != null) {
-                    specialization = Specialization.valueOf(rs.getString("specialization"));
+                if (rs.getString("user_specialization") != null) {
+                    specialization = Specialization.valueOf(rs.getString("user_specialization"));
                 }
                 users.add(
                         User.builder()
-                                .id(rs.getLong("id"))
-                                .login(rs.getString("login"))
-                                .password(rs.getString("password"))
-                                .name(rs.getString("name"))
-                                .weight(rs.getFloat("weight"))
-                                .height(rs.getShort("height"))
+                                .id(rs.getLong("user_id"))
+                                .login(rs.getString("user_login"))
+                                .password(rs.getString("user_password"))
+                                .name(rs.getString("user_name"))
+                                .weight(rs.getFloat("user_weight"))
+                                .height(rs.getShort("user_height"))
                                 .specialization(specialization)
-                                .xp(rs.getInt("xp"))
-                                .strength(rs.getShort("strength"))
-                                .stamina(rs.getShort("stamina"))
-                                .flexibility(rs.getShort("flexibility"))
-                                .gender(rs.getBoolean("gender"))
+                                .xp(rs.getInt("user_xp"))
+                                .strength(rs.getShort("user_strength"))
+                                .stamina(rs.getShort("user_stamina"))
+                                .flexibility(rs.getShort("user_flexibility"))
+                                .gender(rs.getBoolean("user_gender"))
                                 .build()
                 );
             }
@@ -183,22 +184,22 @@ public class UserDaoJdbcImpl implements UserDao {
                 return null;
             }
             Specialization specialization = null;
-            if (rs.getString("specialization") != null) {
-                specialization = Specialization.valueOf(rs.getString("specialization"));
+            if (rs.getString("user_specialization") != null) {
+                specialization = Specialization.valueOf(rs.getString("user_specialization"));
             }
             return User.builder()
-                    .id(rs.getLong("id"))
-                    .login(rs.getString("login"))
-                    .password(rs.getString("password"))
-                    .name(rs.getString("name"))
-                    .weight(rs.getFloat("weight"))
-                    .height(rs.getShort("height"))
+                    .id(rs.getLong("user_id"))
+                    .login(rs.getString("user_login"))
+                    .password(rs.getString("user_password"))
+                    .name(rs.getString("user_name"))
+                    .weight(rs.getFloat("user_weight"))
+                    .height(rs.getShort("user_height"))
                     .specialization(specialization)
-                    .xp(rs.getInt("xp"))
-                    .strength(rs.getShort("strength"))
-                    .stamina(rs.getShort("stamina"))
-                    .flexibility(rs.getShort("flexibility"))
-                    .gender(rs.getBoolean("gender"))
+                    .xp(rs.getInt("user_xp"))
+                    .strength(rs.getShort("user_strength"))
+                    .stamina(rs.getShort("user_stamina"))
+                    .flexibility(rs.getShort("user_flexibility"))
+                    .gender(rs.getBoolean("user_gender"))
                     .build();
         } catch (SQLException e) {
             throw new IllegalArgumentException(e);

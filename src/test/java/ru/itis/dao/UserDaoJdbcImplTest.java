@@ -1,11 +1,13 @@
 package ru.itis.dao;
 
-import org.junit.*;
+import com.google.common.collect.Lists;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import ru.itis.entity.Specialization;
 import ru.itis.entity.User;
 import ru.itis.utils.DBWrapper;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -26,10 +28,13 @@ public class UserDaoJdbcImplTest {
 
     @AfterClass
     public static void tearDown() throws Exception {
-        User userSave = userDao.findByLogin("Save_test");
-        userDao.delete(userSave.getId());
-        User userUpd = userDao.findByLogin("Update_test");
-        userDao.delete(userUpd.getId());
+        Lists.newArrayList("Save_test", "Update_test", "Save_test_enum", "Update_test_enum")
+                .forEach(s -> {
+                    User user = userDao.findByLogin(s);
+                    if (user != null) {
+                        userDao.delete(user.getId());
+                    }
+                });
     }
 
     @Test
@@ -39,12 +44,12 @@ public class UserDaoJdbcImplTest {
                 .gender(true)
                 .login("Save_test")
                 .password("qwerty123")
-                .specialization(Specialization.Strength)
                 .build();
         userDao.save(user);
         assertNotNull(user);
         assertNotNull(user.getId());
     }
+
 
     @Test(expected = IllegalArgumentException.class)
     public void saveNegativeXp() throws Exception {
@@ -83,6 +88,22 @@ public class UserDaoJdbcImplTest {
         assertNotNull(user);
         assertNotNull(user.getId());
         assertEquals(false, user.getGender());
+    }
+
+    @Test
+    public void updateWithEnum() throws Exception {
+        User user = User.builder()
+                .name("Test")
+                .gender(true)
+                .login("Update_test_enum")
+                .password("qwerty")
+                .build();
+        userDao.save(user);
+        user.setSpecialization(Specialization.Agility);
+        userDao.update(user);
+        assertNotNull(user);
+        assertNotNull(user.getId());
+        assertEquals(Specialization.Agility, user.getSpecialization());
     }
 
     @Test

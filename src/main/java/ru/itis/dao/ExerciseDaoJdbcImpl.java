@@ -22,14 +22,14 @@ public class ExerciseDaoJdbcImpl implements ExerciseDao {
         this.connection = connection;
     }
 
-    private final static String SQL_INSERT = "INSERT INTO exercises (name, complexity, description, " +
-            "instruction, fails, resource, type) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private final static String SQL_INSERT = "INSERT INTO exercises (exercise_name, exercise_complexity, " +
+            "exercise_type) VALUES (?, ?, ?)";
     private final static String SQL_SELECT_ALL = "SELECT * FROM exercises;";
-    private final static String SQL_SELECT_BY_ID = "SELECT * FROM exercises WHERE exercises.id = ?;";
-    private final static String SQL_SELECT_BY_NAME = "SELECT * FROM exercises WHERE exercises.name = ?;";
-    private final static String SQL_UPDATE = "UPDATE exercises SET (name, complexity, description, " +
-            "instruction, fails, resource, type) = (?, ?, ?, ?, ?, ?, ?) WHERE id = ?";
-    private final static String SQL_DELETE = "DELETE FROM exercises WHERE id = ?";
+    private final static String SQL_SELECT_BY_ID = "SELECT * FROM exercises WHERE exercise_id = ?;";
+    private final static String SQL_SELECT_BY_NAME = "SELECT * FROM exercises WHERE exercise_name = ?;";
+    private final static String SQL_UPDATE = "UPDATE exercises SET (exercise_name, exercise_complexity, exercise_type) " +
+            "= (?, ?, ?) WHERE exercise_id = ?";
+    private final static String SQL_DELETE = "DELETE FROM exercises WHERE exercise_id = ?";
 
     @Override
     public void save(Exercise model) {
@@ -43,26 +43,19 @@ public class ExerciseDaoJdbcImpl implements ExerciseDao {
             } else {
                 stmt.setObject(2, model.getComplexity());
             }
-            stmt.setObject(3, model.getDescription());
-            stmt.setObject(4, model.getInstruction());
-            stmt.setObject(5, model.getFails());
-            stmt.setObject(6, model.getResource());
             if (model.getType() != null) {
-                stmt.setObject(7, model.getType().toString());
+                stmt.setObject(3, model.getType().toString());
             } else {
-                stmt.setObject(7, model.getType());
+                stmt.setObject(3, model.getType());
             }
             stmt.executeUpdate();
 
             ResultSet resultSet = stmt.getGeneratedKeys();
             if (resultSet.next()) {
-                Integer id = resultSet.getInt("id");
+                Integer id = resultSet.getInt("exercise_id");
                 model.setId(id);
             }
         } catch (SQLException e) {
-            if (e.getSQLState().startsWith("23")) { //integrity constraint violation
-                throw new IllegalArgumentException("Xp can't be less than zero.");
-            }
             throw new IllegalArgumentException(e);
         }
     }
@@ -79,23 +72,19 @@ public class ExerciseDaoJdbcImpl implements ExerciseDao {
             }
 
             Specialization specialization = null;
-            if (rs.getString("type") != null) {
-                specialization = Specialization.valueOf(rs.getString("type"));
+            if (rs.getString("exercise_type") != null) {
+                specialization = Specialization.valueOf(rs.getString("exercise_type"));
             }
 
             Complexity complexity = null;
-            if (rs.getString("complexity") != null) {
-                complexity = Complexity.valueOf(rs.getString("complexity"));
+            if (rs.getString("exercise_complexity") != null) {
+                complexity = Complexity.valueOf(rs.getString("exercise_complexity"));
             }
             return Exercise.builder()
-                    .id(rs.getInt("id"))
-                    .name(rs.getString("name"))
+                    .id(rs.getInt("exercise_id"))
+                    .name(rs.getString("exercise_name"))
                     .complexity(complexity)
-                    .description(rs.getString("description"))
-                    .instruction(rs.getString("instruction"))
-                    .fails(rs.getString("fails"))
                     .type(specialization)
-                    .resource(rs.getString("resource"))
                     .build();
 
         } catch (SQLException e) {
@@ -113,16 +102,12 @@ public class ExerciseDaoJdbcImpl implements ExerciseDao {
             } else {
                 stmt.setObject(2, model.getComplexity());
             }
-            stmt.setObject(3, model.getDescription());
-            stmt.setObject(4, model.getInstruction());
-            stmt.setObject(5, model.getFails());
-            stmt.setObject(6, model.getResource());
             if (model.getType() != null) {
-                stmt.setObject(7, model.getType().toString());
+                stmt.setObject(3, model.getType().toString());
             } else {
-                stmt.setObject(7, model.getType());
+                stmt.setObject(3, model.getType());
             }
-            stmt.setInt(8, model.getId());
+            stmt.setInt(4, model.getId());
             stmt.execute();
         } catch (SQLException e) {
             throw new IllegalArgumentException(e);
@@ -149,24 +134,20 @@ public class ExerciseDaoJdbcImpl implements ExerciseDao {
             List<Exercise> exercises = new ArrayList<>();
             while (rs.next()) {
                 Specialization specialization = null;
-                if (rs.getString("type") != null) {
-                    specialization = Specialization.valueOf(rs.getString("type"));
+                if (rs.getString("exercise_type") != null) {
+                    specialization = Specialization.valueOf(rs.getString("exercise_type"));
                 }
 
                 Complexity complexity = null;
-                if (rs.getString("complexity") != null) {
-                    complexity = Complexity.valueOf(rs.getString("complexity"));
+                if (rs.getString("exercise_complexity") != null) {
+                    complexity = Complexity.valueOf(rs.getString("exercise_complexity"));
                 }
                 exercises.add(
                         Exercise.builder()
-                                .id(rs.getInt("id"))
-                                .name(rs.getString("name"))
+                                .id(rs.getInt("exercise_id"))
+                                .name(rs.getString("exercise_name"))
                                 .complexity(complexity)
-                                .description(rs.getString("description"))
-                                .instruction(rs.getString("instruction"))
-                                .fails(rs.getString("fails"))
                                 .type(specialization)
-                                .resource(rs.getString("resource"))
                                 .build()
                 );
             }
@@ -189,23 +170,19 @@ public class ExerciseDaoJdbcImpl implements ExerciseDao {
             }
 
             Specialization specialization = null;
-            if (rs.getString("type") != null) {
-                specialization = Specialization.valueOf(rs.getString("type"));
+            if (rs.getString("exercise_type") != null) {
+                specialization = Specialization.valueOf(rs.getString("exercise_type"));
             }
 
             Complexity complexity = null;
-            if (rs.getString("complexity") != null) {
-                complexity = Complexity.valueOf(rs.getString("complexity"));
+            if (rs.getString("exercise_complexity") != null) {
+                complexity = Complexity.valueOf(rs.getString("exercise_complexity"));
             }
             return Exercise.builder()
-                    .id(rs.getInt("id"))
-                    .name(rs.getString("name"))
+                    .id(rs.getInt("exercise_id"))
+                    .name(rs.getString("exercise_name"))
                     .complexity(complexity)
-                    .description(rs.getString("description"))
-                    .instruction(rs.getString("instruction"))
-                    .fails(rs.getString("fails"))
                     .type(specialization)
-                    .resource(rs.getString("resource"))
                     .build();
         } catch (SQLException e) {
             throw new IllegalArgumentException(e);
