@@ -5,10 +5,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ru.itis.dao.UserDao;
 import ru.itis.dto.UserDto;
-import ru.itis.dto.UserProfileDto;
 import ru.itis.dto.UserSignInDto;
 import ru.itis.models.User;
-import ru.itis.utils.UserLevelUtil;
 
 /**
  * 05.11.2017
@@ -58,34 +56,5 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Override
-    public UserProfileDto getUserProfile(Long id) {
-        User user = userDao.find(id);
-        return UserProfileDto
-                .builder()
-                .id(user.getId())
-                .name(user.getName())
-                .weight(user.getWeight())
-                .height(user.getHeight())
-                .specialization(user.getSpecialization())
-                .lvl(UserLevelUtil.getLvl(user.getXp()))
-                .strength(user.getStrength())
-                .stamina(user.getStamina())
-                .flexibility(user.getFlexibility())
-                .gender(user.getGender())
-                .build();
-    }
 
-    @Override
-    public UserProfileDto editUserProfile(UserProfileDto profile) {
-        User model = User.builder()
-                .id(profile.getId())
-                .name(profile.getName())
-                .weight(profile.getWeight())
-                .height(profile.getHeight())
-                .gender(profile.getGender())
-                .build();
-        userDao.save(model);
-        return profile;
-    }
 }

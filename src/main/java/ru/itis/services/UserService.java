@@ -1,7 +1,6 @@
 package ru.itis.services;
 
 import ru.itis.dto.UserDto;
-import ru.itis.dto.UserProfileDto;
 import ru.itis.dto.UserRegistrationDto;
 import ru.itis.dto.UserSignInDto;
 
@@ -15,8 +14,4 @@ public interface UserService {
     UserDto register(UserRegistrationDto user);
 
     UserDto signIn(UserSignInDto user);
-
-    UserProfileDto getUserProfile(Long id);
-
-    UserProfileDto editUserProfile(UserProfileDto profile);
 }

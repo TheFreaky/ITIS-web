@@ -20,6 +20,7 @@ public class UserDaoJdbcImpl implements UserDao {
             "user_height, user_specialization, user_xp, user_strength, user_stamina, user_flexibility, user_gender) = " +
             "(?, ?, ?, ?, ?, ?::specialization, ?, ?, ?, ?, ?) WHERE user_id = ?";
     private final static String SQL_DELETE = "DELETE FROM users WHERE user_id = ?";
+    private final static String SQL_UPDATE_XP = "UPDATE users SET (user_xp) = (user_xp + ?) WHERE user_id = ?";
 
     public UserDaoJdbcImpl(Connection connection) {
         this.connection = connection;
@@ -201,6 +202,19 @@ public class UserDaoJdbcImpl implements UserDao {
                     .flexibility(rs.getShort("user_flexibility"))
                     .gender(rs.getBoolean("user_gender"))
                     .build();
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override
+    public void updateXp(User user, Integer xp) {
+        try {
+            PreparedStatement stmt =
+                    connection.prepareStatement(SQL_UPDATE_XP);
+            stmt.setInt(1, xp);
+            stmt.setLong(2, user.getId());
+            stmt.execute();
         } catch (SQLException e) {
             throw new IllegalArgumentException(e);
         }

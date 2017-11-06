@@ -1,5 +1,7 @@
 package ru.itis.services;
 
+import ru.itis.dao.TrainingDao;
+import ru.itis.dao.UserDao;
 import ru.itis.dao.UserTrainingDao;
 import ru.itis.dto.UserDto;
 import ru.itis.models.Training;
@@ -17,25 +19,35 @@ import java.util.List;
  */
 public class UserTrainingServiceImpl implements UserTrainingService {
     private final UserTrainingDao userTrainingDao;
+    private final TrainingDao trainingDao;
+    private final UserDao userDao;
 
-    public UserTrainingServiceImpl(UserTrainingDao userTrainingDao) {
+    public UserTrainingServiceImpl(UserTrainingDao userTrainingDao, TrainingDao trainingDao, UserDao userDao) {
         this.userTrainingDao = userTrainingDao;
+        this.trainingDao = trainingDao;
+        this.userDao = userDao;
     }
 
+    @Override
     public List<UserTraining> getUserTrainings(UserDto user) {
         return userTrainingDao.findByUserId(user.getId());
     }
 
-    public void addUserTraining(UserDto userDto, Integer trainingId) {
+    @Override
+    public void addUserTraining(UserDto userDto, Integer trainingId, Integer complete) {
+        Training training = trainingDao.find(trainingId);
+        User user = User.builder()
+                .id(userDto.getId())
+                .build();
+
+        Integer xp = training.getXp() * complete / 100;
+
+        userDao.updateXp(user, xp);
         userTrainingDao.save(
                 UserTraining.builder()
                         .date(LocalDate.now())
-                        .user(User.builder()
-                                .id(userDto.getId())
-                                .build())
-                        .training(Training.builder()
-                                .id(trainingId)
-                                .build())
+                        .user(user)
+                        .training(training)
                         .build()
         );
     }
