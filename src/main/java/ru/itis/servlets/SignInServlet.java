@@ -1,11 +1,12 @@
 package ru.itis.servlets;
 
-import ru.itis.dao.UserDao;
 import ru.itis.dao.UserDaoJdbcImpl;
-import ru.itis.models.User;
+import ru.itis.dto.UserDto;
+import ru.itis.dto.UserSignInDto;
+import ru.itis.services.UserService;
+import ru.itis.services.UserServiceImpl;
 import ru.itis.utils.DBWrapper;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,32 +20,33 @@ import java.io.IOException;
  * @version v1.0
  */
 public class SignInServlet extends HttpServlet {
-    private UserDao userDao;
+    private UserService userService;
 
     @Override
     public void init() throws ServletException {
-        userDao = new UserDaoJdbcImpl(DBWrapper.getConnection());
+        userService = new UserServiceImpl(new UserDaoJdbcImpl(DBWrapper.getConnection()));
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/signin.jsp");
-        if (dispatcher != null) {
-            dispatcher.forward(request, response);
-        }
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.sendRedirect(req.getContextPath() + "/");
     }
 
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String password = req.getParameter("auth-password");
-        String login = req.getParameter("auth-email").toLowerCase();
+        String password = req.getParameter("signin-password");
+        String email = req.getParameter("signin-username").toLowerCase();
 
-        User user = userDao.findByLogin(login);
-        if (user != null && password.equals(user.getPassword())) {
+        UserDto user = userService.signIn(
+                UserSignInDto.builder()
+                        .password(password)
+                        .login(email)
+                        .build());
+        if (user != null) {
             req.getSession().setAttribute("user", user);
-            resp.sendRedirect(req.getContextPath() + "/users");
+            resp.sendRedirect(req.getContextPath() + "/trainings");
         } else {
-            req.setAttribute("error", "Invalid login or password");
-            req.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(req, resp);
+            req.setAttribute("signinErrors", "Invalid email or password");
+            req.getRequestDispatcher("/WEB-INF/views/welcome.jsp").forward(req, resp);
         }
     }
 }

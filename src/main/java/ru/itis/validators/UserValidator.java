@@ -1,6 +1,6 @@
-package ru.itis.service;
+package ru.itis.validators;
 
-import ru.itis.models.User;
+import ru.itis.dto.UserRegistrationDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +13,10 @@ import java.util.regex.Pattern;
  * @author Kuznetsov Maxim
  * @version v1.0
  */
-public class UserValidator implements Validator<User> {
+public class UserValidator implements Validator<UserRegistrationDto> {
 
     @Override
-    public List<String> validate(User model) {
+    public List<String> validate(UserRegistrationDto model) {
         List<String> errors = new ArrayList<>();
 
         if (!isValidEmail(model.getLogin())) {
@@ -38,7 +38,7 @@ public class UserValidator implements Validator<User> {
         if (!baseValidation(email)) return false;
 
         email = email.trim();
-        String regex = "^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$";
+        String regex = ".+@.+\\.[a-z]+";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();

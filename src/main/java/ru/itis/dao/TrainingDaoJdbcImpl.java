@@ -25,7 +25,7 @@ public class TrainingDaoJdbcImpl implements TrainingDao {
     }
 
     private final static String SQL_INSERT = "INSERT INTO trainings (training_name, training_description, " +
-            "training_xp, training_min_lvl, training_complexity, training_type) VALUES (?, ?, ?, ?, ?, ?)";
+            "training_xp, training_min_lvl, training_complexity, training_type) VALUES (?, ?, ?, ?, ?::complexity, ?)";
     private final static String SQL_SELECT_ALL = "SELECT t.*, e.* FROM trainings AS t " +
             "LEFT JOIN trainings_exercises AS te ON t.training_id = te.training_id " +
             "LEFT JOIN exercises AS e ON e.exercise_id = te.exercise_id;";
@@ -33,7 +33,8 @@ public class TrainingDaoJdbcImpl implements TrainingDao {
             "LEFT JOIN trainings_exercises AS te ON t.training_id = te.training_id " +
             "LEFT JOIN exercises AS e ON e.exercise_id = te.exercise_id WHERE t.training_id = ?;";
     private final static String SQL_UPDATE = "UPDATE trainings SET (training_name, training_description, " +
-            "training_xp, training_min_lvl, training_complexity, training_type) = (?, ?, ?, ?, ?, ?) WHERE training_id = ?";
+            "training_xp, training_min_lvl, training_complexity, training_type) = (?, ?, ?, ?, ?::complexity, ?) " +
+            "WHERE training_id = ?";
     private final static String SQL_DELETE = "DELETE FROM trainings WHERE training_id = ?";
     private final static String SQL_SELECT_BY_NAME = "SELECT t.*, e.* FROM trainings AS t " +
             "LEFT JOIN trainings_exercises AS te ON t.training_id = te.training_id " +

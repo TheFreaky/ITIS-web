@@ -11,5 +11,5 @@ import java.util.List;
  * @version v1.0
  */
 public interface UserTrainingDao extends CrudDao<UserTraining, Integer> {
-    List<UserTraining> findByUser(Long userId);
+    List<UserTraining> findByUserId(Long userId);
 }

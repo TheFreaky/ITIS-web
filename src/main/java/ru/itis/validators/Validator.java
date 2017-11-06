@@ -1,4 +1,4 @@
-package ru.itis.service;
+package ru.itis.validators;
 
 import java.util.List;
 

@@ -137,7 +137,7 @@ public class UserTrainingDaoJdbcImpl implements UserTrainingDao {
     }
 
     @Override
-    public List<UserTraining> findByUser(Long userId) {
+    public List<UserTraining> findByUserId(Long userId) {
         try {
             PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_BY_USER);
             stmt.setLong(1, userId);

@@ -1,27 +1,18 @@
-package ru.itis.models;
+package ru.itis.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import ru.itis.models.Specialization;
 
-/**
- * 26.10.2017
- *
- * @author Kuznetsov Maxim
- * @version v1.0
- */
 @Data
 @Builder
-@AllArgsConstructor
-public class User {
+public class UserProfileDto {
     private Long id;
-    private String login;
-    private String password;
     private String name;
     private Float weight;
     private Short height;
     private Specialization specialization;
-    private Long xp;
+    private Integer lvl;
     private Short strength;
     private Short stamina;
     private Short flexibility;

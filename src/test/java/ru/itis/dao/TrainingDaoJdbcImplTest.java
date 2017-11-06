@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import ru.itis.models.Complexity;
 import ru.itis.models.Training;
 import ru.itis.utils.DBWrapper;
 
@@ -43,6 +44,7 @@ public class TrainingDaoJdbcImplTest {
                 .description("test")
                 .xp(0)
                 .minLvl((short) 1)
+                .complexity(Complexity.Advanced)
                 .build();
         trainingDao.save(training);
         assertNotNull(training);
@@ -77,6 +79,7 @@ public class TrainingDaoJdbcImplTest {
                 .description("test")
                 .xp(1)
                 .minLvl((short) 1)
+                .complexity(Complexity.Advanced)
                 .build();
         trainingDao.save(training);
         training.setXp(0);
@@ -93,6 +96,7 @@ public class TrainingDaoJdbcImplTest {
                 .description("test")
                 .xp(0)
                 .minLvl((short) 1)
+                .complexity(Complexity.Advanced)
                 .build();
         trainingDao.save(training);
         trainingDao.delete(training.getId());

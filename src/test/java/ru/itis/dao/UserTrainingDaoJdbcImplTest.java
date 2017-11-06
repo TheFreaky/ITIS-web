@@ -40,7 +40,7 @@ public class UserTrainingDaoJdbcImplTest {
 
     @AfterClass
     public static void tearDown() throws Exception {
-        userTrainingDao.findByUser(user.getId())
+        userTrainingDao.findByUserId(user.getId())
                 .forEach(userTraining ->
                         userTrainingDao.delete(userTraining.getId())
                 );
@@ -131,7 +131,7 @@ public class UserTrainingDaoJdbcImplTest {
                 .build();
         userTrainingDao.save(userTraining);
 
-        List<UserTraining> trainings = userTrainingDao.findByUser(user.getId());
+        List<UserTraining> trainings = userTrainingDao.findByUserId(user.getId());
         assertNotNull(trainings);
         assertTrue(trainings.size() > 0);
         assertNotNull(trainings.get(0));

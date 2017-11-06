@@ -1,10 +1,13 @@
 package ru.itis.filter;
 
+import com.google.common.collect.Sets;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * 11.10.2017
@@ -13,9 +16,11 @@ import java.io.IOException;
  * @version v1.0
  */
 public class UserFilter implements Filter {
+    Set<String> permitedWithoutSignin;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        permitedWithoutSignin = Sets.newHashSet("", "signin", "signup");
     }
 
     @Override
@@ -24,11 +29,20 @@ public class UserFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession();
 
-        if (session.getAttribute("user") != null ||
-                req.getRequestURI().contains("sign")) {
-            chain.doFilter(request, response);
+        String path = req.getRequestURI().replace(req.getContextPath() + "/", "");
+
+        if (session.getAttribute("user") == null) {
+            if (permitedWithoutSignin.contains(path)) {
+                chain.doFilter(request, response);
+            } else {
+                resp.sendRedirect(req.getContextPath() + "/");
+            }
         } else {
-            resp.sendRedirect(req.getContextPath() + "/signin");
+            if (permitedWithoutSignin.contains(path)) {
+                resp.sendRedirect(req.getContextPath() + "/trainings");
+            } else {
+                chain.doFilter(request, response);
+            }
         }
     }
 

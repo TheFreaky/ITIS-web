@@ -10,4 +10,6 @@ import ru.itis.models.Training;
  */
 public interface TrainingDao extends CrudDao<Training, Integer> {
     Training findByName(String name);
+    //ToDo: order by complexity and type methods
+    //ToDo: trainings by min lvl
 }

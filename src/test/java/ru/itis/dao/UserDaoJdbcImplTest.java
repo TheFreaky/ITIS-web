@@ -58,7 +58,7 @@ public class UserDaoJdbcImplTest {
                 .gender(true)
                 .login("Save_test")
                 .password("qwerty123")
-                .xp(-1)
+                .xp(-1L)
                 .build();
         userDao.save(user);
         assertNotNull(user);
