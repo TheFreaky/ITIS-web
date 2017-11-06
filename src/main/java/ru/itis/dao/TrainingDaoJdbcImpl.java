@@ -25,7 +25,7 @@ public class TrainingDaoJdbcImpl implements TrainingDao {
     }
 
     private final static String SQL_INSERT = "INSERT INTO trainings (training_name, training_description, " +
-            "training_xp, training_min_lvl, training_complexity, training_type) VALUES (?, ?, ?, ?, ?::complexity, ?)";
+            "training_xp, training_min_lvl, training_complexity, training_type) VALUES (?, ?, ?, ?, ?::COMPLEXITY, ?)";
     private final static String SQL_SELECT_ALL = "SELECT t.*, e.* FROM trainings AS t " +
             "LEFT JOIN trainings_exercises AS te ON t.training_id = te.training_id " +
             "LEFT JOIN exercises AS e ON e.exercise_id = te.exercise_id;";
@@ -33,12 +33,15 @@ public class TrainingDaoJdbcImpl implements TrainingDao {
             "LEFT JOIN trainings_exercises AS te ON t.training_id = te.training_id " +
             "LEFT JOIN exercises AS e ON e.exercise_id = te.exercise_id WHERE t.training_id = ?;";
     private final static String SQL_UPDATE = "UPDATE trainings SET (training_name, training_description, " +
-            "training_xp, training_min_lvl, training_complexity, training_type) = (?, ?, ?, ?, ?::complexity, ?) " +
+            "training_xp, training_min_lvl, training_complexity, training_type) = (?, ?, ?, ?, ?::COMPLEXITY, ?) " +
             "WHERE training_id = ?";
     private final static String SQL_DELETE = "DELETE FROM trainings WHERE training_id = ?";
     private final static String SQL_SELECT_BY_NAME = "SELECT t.*, e.* FROM trainings AS t " +
             "LEFT JOIN trainings_exercises AS te ON t.training_id = te.training_id " +
             "LEFT JOIN exercises AS e ON e.exercise_id = te.exercise_id WHERE training_name = ?;";
+    private final static String SQL_SELECT_BY_LVL = "SELECT t.*, e.* FROM trainings AS t " +
+            "LEFT JOIN trainings_exercises AS te ON t.training_id = te.training_id " +
+            "LEFT JOIN exercises AS e ON e.exercise_id = te.exercise_id WHERE training_min_lvl <= ?;";
 
     @Override
     public void save(Training model) {
@@ -124,9 +127,37 @@ public class TrainingDaoJdbcImpl implements TrainingDao {
     @Override
     public List<Training> findAll() {
         try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(SQL_SELECT_ALL);
+            return findAll(connection.createStatement().executeQuery(SQL_SELECT_ALL));
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
 
+    @Override
+    public Training findByName(String name) {
+        try {
+            PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_BY_NAME);
+            stmt.setString(1, name);
+            return find(stmt.executeQuery());
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override
+    public List<Training> findAllByMinLvlLessThan(Integer lvl) {
+        try {
+            PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_BY_LVL);
+            stmt.setInt(1, lvl);
+            return findAll(stmt.executeQuery());
+
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    private List<Training> findAll(ResultSet rs) {
+        try {
             List<Training> trainings = new ArrayList<>();
             int lastId = -1;
             while (rs.next()) {
@@ -164,17 +195,6 @@ public class TrainingDaoJdbcImpl implements TrainingDao {
                         .build());
             }
             return trainings;
-        } catch (SQLException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
-    @Override
-    public Training findByName(String name) {
-        try {
-            PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_BY_NAME);
-            stmt.setString(1, name);
-            return find(stmt.executeQuery());
         } catch (SQLException e) {
             throw new IllegalArgumentException(e);
         }
