@@ -1,6 +1,8 @@
 package ru.itis.models;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
 import java.util.Set;
 
@@ -10,11 +12,8 @@ import java.util.Set;
  * @author Kuznetsov Maxim
  * @version v1.0
  */
-@Setter
-@Getter
+@Data
 @Builder
-@ToString
-@NoArgsConstructor
 @AllArgsConstructor
 public class Training {
     private Integer id;
