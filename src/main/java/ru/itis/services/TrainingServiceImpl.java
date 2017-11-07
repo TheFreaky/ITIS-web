@@ -9,6 +9,7 @@ import ru.itis.models.User;
 import ru.itis.utils.UserLevelUtil;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -28,14 +29,17 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public List<TrainingDto> getTrainings(UserDto user) {
-        Integer lvl = UserLevelUtil.getLvl(userDao.find(user.getId()).getXp());
-        return trainingDao.findAllByMinLvlLessThan(lvl).stream()
-                .map(training -> TrainingDto.builder()
-                        .name(training.getName())
-                        .complexity(training.getComplexity())
-                        .type(training.getType())
-                        .build())
-                .collect(Collectors.toList());
+        return trainingToTrainingDto(user, trainingDao::findAllByMinLvlLessThan);
+    }
+
+    @Override
+    public List<TrainingDto> getTrainingsSortedByType(UserDto user) {
+        return trainingToTrainingDto(user, trainingDao::findAllByMinLvlLessThanOrderByType);
+    }
+
+    @Override
+    public List<TrainingDto> getTrainingsSortedByComplexity(UserDto user) {
+        return trainingToTrainingDto(user, trainingDao::findAllByMinLvlLessThanOrderByComplexity);
     }
 
     @Override
@@ -50,5 +54,16 @@ public class TrainingServiceImpl implements TrainingService {
             training = null;
         }
         return training;
+    }
+
+    private List<TrainingDto> trainingToTrainingDto (UserDto user, Function<Integer, List<Training>> function) {
+        Integer lvl = UserLevelUtil.getLvl(userDao.find(user.getId()).getXp());
+        return function.apply(lvl).stream()
+                .map(training -> TrainingDto.builder()
+                        .name(training.getName())
+                        .complexity(training.getComplexity())
+                        .type(training.getType())
+                        .build())
+                .collect(Collectors.toList());
     }
 }

@@ -15,11 +15,8 @@ public interface TrainingDao extends CrudDao<Training, Integer> {
 
     List<Training> findAllByMinLvlLessThan(Integer lvl);
 
-    List<Training> findAllByOrderByComplexityAsc();
+    List<Training> findAllByMinLvlLessThanOrderByComplexity(Integer lvl);
 
-    List<Training> findAllByOrderByComplexityDesc();
+    List<Training> findAllByMinLvlLessThanOrderByType(Integer lvl);
 
-    List<Training> findAllByOrderByTypeAsc();
-
-    List<Training> findAllByOrderByTypeDesc();
 }

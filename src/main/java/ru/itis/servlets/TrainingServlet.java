@@ -2,6 +2,7 @@ package ru.itis.servlets;
 
 import ru.itis.dao.TrainingDaoJdbcImpl;
 import ru.itis.dao.UserDaoJdbcImpl;
+import ru.itis.dto.TrainingDto;
 import ru.itis.dto.UserDto;
 import ru.itis.services.TrainingService;
 import ru.itis.services.TrainingServiceImpl;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.List;
 
 /**
  * 06.11.2017
@@ -34,10 +36,11 @@ public class TrainingServlet extends HttpServlet {
         String path;
         UserDto userDto = (UserDto) req.getSession().getAttribute("user");
 
-        String trainingName = req.getParameter("training-name");
+        String trainingName = req.getParameter("name");
+        String sort = req.getParameter("how");
         if (trainingName == null) {
             path = "/WEB-INF/views/trainings.jsp";
-            req.setAttribute("trainings", trainingService.getTrainings(userDto));
+            req.setAttribute("trainings", getTrainings(sort, userDto));
         } else {
             path = "/WEB-INF/views/training.jsp";
             //ToDo: check in jsp not null, if null u lvl too small
@@ -49,4 +52,15 @@ public class TrainingServlet extends HttpServlet {
             dispatcher.forward(req, resp);
         }
     }
+
+    private List<TrainingDto> getTrainings(String sort, UserDto userDto) {
+        if ("type".equals(sort)) {
+            return trainingService.getTrainingsSortedByType(userDto);
+        } else if ("complexity".equals(sort)) {
+            return trainingService.getTrainingsSortedByComplexity(userDto);
+        } else {
+            return trainingService.getTrainings(userDto);
+        }
+    }
+
 }

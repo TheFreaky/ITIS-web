@@ -15,5 +15,9 @@ import java.util.List;
 public interface TrainingService {
     List<TrainingDto> getTrainings(UserDto user);
 
+    List<TrainingDto> getTrainingsSortedByType(UserDto user);
+
+    List<TrainingDto> getTrainingsSortedByComplexity(UserDto user);
+
     Training getTraining(String name, UserDto user);
 }
