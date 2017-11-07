@@ -12,7 +12,14 @@ import java.util.List;
  */
 public interface TrainingDao extends CrudDao<Training, Integer> {
     Training findByName(String name);
+
     List<Training> findAllByMinLvlLessThan(Integer lvl);
-    //ToDo: order by complexity and type methods
-    //ToDo: trainings by min lvl
+
+    List<Training> findAllByOrderByComplexityAsc();
+
+    List<Training> findAllByOrderByComplexityDesc();
+
+    List<Training> findAllByOrderByTypeAsc();
+
+    List<Training> findAllByOrderByTypeDesc();
 }

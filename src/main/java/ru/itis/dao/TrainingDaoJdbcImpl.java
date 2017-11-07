@@ -42,6 +42,23 @@ public class TrainingDaoJdbcImpl implements TrainingDao {
     private final static String SQL_SELECT_BY_LVL = "SELECT t.*, e.* FROM trainings AS t " +
             "LEFT JOIN trainings_exercises AS te ON t.training_id = te.training_id " +
             "LEFT JOIN exercises AS e ON e.exercise_id = te.exercise_id WHERE training_min_lvl <= ?;";
+    private final static String SQL_SELECT_ALL_COMPLEXITY_ASC = "SELECT t.*, e.* FROM trainings AS t " +
+            "LEFT JOIN trainings_exercises AS te ON t.training_id = te.training_id " +
+            "LEFT JOIN exercises AS e ON e.exercise_id = te.exercise_id " +
+            "ORDER BY training_complexity;";
+    private final static String SQL_SELECT_ALL_COMPLEXITY_DESC = "SELECT t.*, e.* FROM trainings AS t " +
+            "LEFT JOIN trainings_exercises AS te ON t.training_id = te.training_id " +
+            "LEFT JOIN exercises AS e ON e.exercise_id = te.exercise_id " +
+            "ORDER BY training_complexity DESC;";
+    private final static String SQL_SELECT_ALL_TYPE_ASC = "SELECT t.*, e.* FROM trainings AS t " +
+            "LEFT JOIN trainings_exercises AS te ON t.training_id = te.training_id " +
+            "LEFT JOIN exercises AS e ON e.exercise_id = te.exercise_id " +
+            "ORDER BY training_type;";
+    private final static String SQL_SELECT_ALL_TYPE_DESC = "SELECT t.*, e.* FROM trainings AS t " +
+            "LEFT JOIN trainings_exercises AS te ON t.training_id = te.training_id " +
+            "LEFT JOIN exercises AS e ON e.exercise_id = te.exercise_id " +
+            "ORDER BY training_type DESC;";
+
 
     @Override
     public void save(Training model) {
@@ -150,6 +167,46 @@ public class TrainingDaoJdbcImpl implements TrainingDao {
             PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_BY_LVL);
             stmt.setInt(1, lvl);
             return findAll(stmt.executeQuery());
+
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override
+    public List<Training> findAllByOrderByComplexityAsc() {
+        try {
+            return findAll(connection.createStatement().executeQuery(SQL_SELECT_ALL_COMPLEXITY_ASC));
+
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override
+    public List<Training> findAllByOrderByComplexityDesc() {
+        try {
+            return findAll(connection.createStatement().executeQuery(SQL_SELECT_ALL_COMPLEXITY_DESC));
+
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override
+    public List<Training> findAllByOrderByTypeAsc() {
+        try {
+            return findAll(connection.createStatement().executeQuery(SQL_SELECT_ALL_TYPE_ASC));
+
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override
+    public List<Training> findAllByOrderByTypeDesc() {
+        try {
+            return findAll(connection.createStatement().executeQuery(SQL_SELECT_ALL_TYPE_DESC));
 
         } catch (SQLException e) {
             throw new IllegalArgumentException(e);

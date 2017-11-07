@@ -11,7 +11,7 @@ public class DBWrapper {
         conn = getLocalConnect();
     }
 
-    public static Connection getConnection(){
+    public static Connection getConnection() {
         Connection localInstance = conn;
         if (localInstance == null) {
             synchronized (DBWrapper.class) {
