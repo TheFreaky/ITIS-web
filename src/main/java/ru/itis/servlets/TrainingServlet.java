@@ -38,13 +38,14 @@ public class TrainingServlet extends HttpServlet {
 
         String trainingName = req.getParameter("name");
         String sort = req.getParameter("how");
+
         if (trainingName == null) {
             path = "/WEB-INF/views/trainings.jsp";
             req.setAttribute("trainings", getTrainings(sort, userDto));
         } else {
             path = "/WEB-INF/views/training.jsp";
             //ToDo: check in jsp not null, if null u lvl too small
-            req.setAttribute("trainings", trainingService.getTraining(trainingName, userDto));
+            req.setAttribute("training", trainingService.getTraining(trainingName, userDto));
         }
 
         RequestDispatcher dispatcher = req.getRequestDispatcher(path);
