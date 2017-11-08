@@ -7,5 +7,5 @@ package ru.itis.models;
  * @version v1.0
  */
 public enum Specialization {
-    Agility,Strength,Flexibility
+    Agility, Strength, Flexibility, Common
 }
