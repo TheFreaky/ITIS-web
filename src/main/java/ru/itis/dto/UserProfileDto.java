@@ -12,13 +12,20 @@ import java.util.List;
 public class UserProfileDto {
     private Long id;
     private String name;
+    private String login;
     private Float weight;
     private Short height;
     private Specialization specialization;
     private Integer lvl;
-    private Short strength;
-    private Short stamina;
-    private Short flexibility;
+    private Long xp;
+    private Long xpToLvlUp;
+    private Byte progress;
+    private Short strengthLvl;
+    private Short strengthProgress;
+    private Short staminaLvl;
+    private Short staminaProgress;
+    private Short flexibilityLvl;
+    private Short flexibilityProgress;
     private Boolean gender;
     private List<UserTraining> userTrainings;
 }

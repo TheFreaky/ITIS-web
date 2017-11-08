@@ -1,3 +1,4 @@
+<%--@elvariable id="userProfile" type="ru.itis.dto.UserProfileDto"--%>
 <%--
   Created by IntelliJ IDEA.
   User: Maxim
@@ -87,13 +88,14 @@
                             </div>
                         </div>
                         <div class="profile_user text-center">
-                            <h3 class="user_name_max">Nataliapery</h3>
-                            <p>nataliaperye@sf.com</p>
-                            <h4>Level 2</h4>
+                            <h3 class="user_name_max">${userProfile.name}</h3>
+                            <p>${userProfile.login}</p>
+                            <h4>Level ${userProfile.lvl}</h4>
                             <div class="progress progress-xs">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="40" aria-valuemin="0"
-                                     aria-valuemax="100" style="width: 37%">
-                                    <span class="show">37/100</span>
+                                <div class="progress-bar" role="progressbar" aria-valuenow="${userProfile.progress}"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100" style="width: ${userProfile.progress}%">
+                                    <span class="show">${userProfile.xp}/${userProfile.xpToLvlUp}</span>
                                 </div>
                             </div>
                         </div>
@@ -106,44 +108,47 @@
                                     <p>
                                         <strong>Flexibility</strong>
                                         <small class="pull-right text-muted">
-                                            Level 2
+                                            Level ${userProfile.flexibilityLvl}
                                         </small>
                                     </p>
                                     <div class="progress progress-xs">
                                         <div class="progress-bar progress-bar-success" role="progressbar"
-                                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                                             style="width: 53%">
-                                            <span class="show">53/100</span>
+                                             aria-valuenow="${userProfile.flexibilityProgress}" aria-valuemin="0"
+                                             aria-valuemax="100"
+                                             style="width: ${userProfile.flexibilityProgress}%">
+                                            <span class="show">${userProfile.flexibilityProgress}/100</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div>
                                     <p>
-                                        <strong>Adroitness</strong>
+                                        <strong>Stamina</strong>
                                         <small class="pull-right text-muted">
-                                            Level 1
+                                            Level ${userProfile.staminaLvl}
                                         </small>
                                     </p>
                                     <div class="progress progress-xs">
                                         <div class="progress-bar progress-bar-warning" role="progressbar"
-                                             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-                                             style="width: 10%">
-                                            <span class="show">10/100</span>
+                                             aria-valuenow="${userProfile.staminaProgress}" aria-valuemin="0"
+                                             aria-valuemax="100"
+                                             style="width: ${userProfile.staminaProgress}%">
+                                            <span class="show">${userProfile.staminaProgress}/100</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div>
                                     <p>
-                                        <strong>Force</strong>
+                                        <strong>Strength</strong>
                                         <small class="pull-right text-muted">
-                                            Level 5
+                                            Level ${userProfile.strengthLvl}
                                         </small>
                                     </p>
                                     <div class="progress progress-xs">
                                         <div class="progress-bar progress-bar-info" role="progressbar"
-                                             aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
-                                             style="width: 99%">
-                                            <span class="show">99/100</span>
+                                             aria-valuenow="${userProfile.strengthProgress}" aria-valuemin="0"
+                                             aria-valuemax="100"
+                                             style="width: ${userProfile.strengthProgress}%">
+                                            <span class="show">${userProfile.strengthProgress}/100</span>
                                         </div>
                                     </div>
                                 </div>
@@ -167,15 +172,16 @@
                                         <div class="table-responsive">
                                             <table class="table table-responsive">
                                                 <tbody>
-                                                <tr>
-                                                    <td>
-                                                        Jasmine Barlee posted a comment in Avengers Initiative
-                                                        project.
-                                                    </td>
-                                                    <td>
-                                                        2016/08/15 10:50
-                                                    </td>
-                                                </tr>
+                                                <c:forEach items="${userProfile.userTrainings}" var="userTraining">
+                                                    <tr>
+                                                        <td>
+                                                                ${userTraining.training.name}
+                                                        </td>
+                                                        <td>
+                                                                ${userTraining.date}
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
                                                 </tbody>
                                             </table>
                                         </div>

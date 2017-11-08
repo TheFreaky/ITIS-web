@@ -11,7 +11,7 @@ public class UserLevelUtil {
         return (int) ((Math.sqrt(625 + 100 * xp) - 25) / 50);
     }
 
-    public static int getXpForLvl(Integer lvl) {
-        return 25 * lvl * (1 + lvl);
+    public static Long getXpForLvl(Integer lvl) {
+        return (long) (25 * lvl * (1 + lvl));
     }
 }

@@ -28,17 +28,40 @@ public class UserProfileServiceImpl implements UserProfileService {
     public UserProfileDto getUserProfile(Long id) {
         User user = userDao.find(id);
         List<UserTraining> userTrainings = userTrainingDao.findByUserId(id);
+
+        Long xp = user.getXp();
+        Integer lvl = UserLevelUtil.getLvl(xp);
+        Long xpToLvlUp = UserLevelUtil.getXpForLvl(lvl + 1);
+        Long xpToCurrentLvl = UserLevelUtil.getXpForLvl(lvl);
+        long progress = (xp - xpToCurrentLvl) * 100 / (xpToLvlUp - xpToCurrentLvl);
+
+        int strengthLvl = user.getStrength() / 100;
+        int strengthProgress = user.getStrength() % 100;
+        int staminaLvl = user.getStamina() / 100;
+        int staminaProgress = user.getStamina() % 100;
+        int flexibilityLvl = user.getFlexibility() / 100;
+        int flexibilityProgress = user.getFlexibility() % 100;
+
+
+
         return UserProfileDto
                 .builder()
                 .id(user.getId())
                 .name(user.getName())
+                .login(user.getLogin())
                 .weight(user.getWeight())
                 .height(user.getHeight())
                 .specialization(user.getSpecialization())
-                .lvl(UserLevelUtil.getLvl(user.getXp()))
-                .strength(user.getStrength())
-                .stamina(user.getStamina())
-                .flexibility(user.getFlexibility())
+                .xp(xp)
+                .progress((byte) progress)
+                .lvl(lvl)
+                .xpToLvlUp(xpToLvlUp)
+                .strengthLvl((short) strengthLvl)
+                .strengthProgress((short) strengthProgress)
+                .staminaLvl((short) staminaLvl)
+                .staminaProgress((short) staminaProgress)
+                .flexibilityLvl((short) flexibilityLvl)
+                .flexibilityProgress((short) flexibilityProgress)
                 .gender(user.getGender())
                 .userTrainings(userTrainings)
                 .build();
