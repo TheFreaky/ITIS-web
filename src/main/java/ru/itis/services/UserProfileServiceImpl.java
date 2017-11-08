@@ -15,11 +15,11 @@ import java.util.List;
  * @author Kuznetsov Maxim
  * @version v1.0
  */
-public class UserProfileImpl implements UserProfile {
+public class UserProfileServiceImpl implements UserProfileService {
     private final UserDao userDao;
     private final UserTrainingDao userTrainingDao;
 
-    public UserProfileImpl(UserDao userDao, UserTrainingDao userTrainingDao) {
+    public UserProfileServiceImpl(UserDao userDao, UserTrainingDao userTrainingDao) {
         this.userDao = userDao;
         this.userTrainingDao = userTrainingDao;
     }

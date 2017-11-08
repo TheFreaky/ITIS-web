@@ -16,11 +16,11 @@ import java.util.Set;
  * @version v1.0
  */
 public class UserFilter implements Filter {
-    Set<String> permitedWithoutSignin;
+    Set<String> permittedWithoutSignIn;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        permitedWithoutSignin = Sets.newHashSet("welcome", "signin", "signup");
+        permittedWithoutSignIn = Sets.newHashSet("welcome", "signin", "signup");
     }
 
     @Override
@@ -32,13 +32,13 @@ public class UserFilter implements Filter {
         String path = req.getRequestURI().replace(req.getContextPath() + "/", "");
 
         if (session.getAttribute("user") == null) {
-            if (permitedWithoutSignin.contains(path)) {
+            if (permittedWithoutSignIn.contains(path)) {
                 chain.doFilter(request, response);
             } else {
                 resp.sendRedirect(req.getContextPath() + "/welcome");
             }
         } else {
-            if (permitedWithoutSignin.contains(path)) {
+            if (permittedWithoutSignIn.contains(path)) {
                 resp.sendRedirect(req.getContextPath() + "/trainings");
             } else {
                 chain.doFilter(request, response);

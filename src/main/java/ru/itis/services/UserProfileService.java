@@ -8,7 +8,7 @@ import ru.itis.dto.UserProfileDto;
  * @author Kuznetsov Maxim
  * @version v1.0
  */
-public interface UserProfile {
+public interface UserProfileService {
     UserProfileDto getUserProfile(Long id);
 
     UserProfileDto editUserProfile(UserProfileDto profile);
