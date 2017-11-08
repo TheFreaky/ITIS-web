@@ -23,13 +23,49 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>signOut</servlet-name>
+        <servlet-class>ru.itis.servlets.SignOutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>signOut</servlet-name>
+        <url-pattern>/signout</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
         <servlet-name>welcome</servlet-name>
         <servlet-class>ru.itis.servlets.WelcomeServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>welcome</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/welcome</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>training</servlet-name>
+        <servlet-class>ru.itis.servlets.TrainingServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>training</servlet-name>
+        <url-pattern>/trainings</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>profile</servlet-name>
+        <servlet-class>ru.itis.servlets.UserProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>userTraining</servlet-name>
+        <servlet-class>ru.itis.servlets.UserTrainingServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>profile</servlet-name>
+        <url-pattern>/profile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>userTraining</servlet-name>
+        <url-pattern>/usertraining</url-pattern>
+    </servlet-mapping>
+
 
     <filter>
         <filter-name>UserFilter</filter-name>

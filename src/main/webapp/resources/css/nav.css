@@ -1,0 +1,27 @@
+.navbar-left .nav .open > a, .navbar-left .nav .open > a:hover, .navbar-left .nav .open > a:focus, .navbar-left .nav > li > a:hover, .navbar-left .nav > li > a:focus {
+    background-color: #3d4e5d;
+    border-color: #3d4e5d
+}
+
+.navbar-left .nav > li > a, .navbar-left .nav > li > a {
+    color: #fff;
+    font-size: 17px
+}
+
+.navbar-nav > .user-menu > .dropdown-menu > li.user-footer {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.logo img {
+    width: 250px;
+    margin: 0 auto;
+}
+
+.logo {
+    margin-right: 20px;
+}
+
+header {
+    margin-bottom: 1em;
+}

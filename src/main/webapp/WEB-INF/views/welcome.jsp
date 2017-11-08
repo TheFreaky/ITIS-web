@@ -25,7 +25,7 @@
             integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
             crossorigin="anonymous"></script>
 
-    <link href="<c:url value="/resources/css/scrolling-nav.css"/>" rel="stylesheet">
+    <link href="<c:url value="/resources/css/scrolling-nav.css"/>" rel="stylesheet" type='text/css'>
 
     <script>
         window.onload = function () {
