@@ -14,5 +14,5 @@ import java.util.List;
 public interface UserTrainingService {
     List<UserTraining> getUserTrainings(UserDto user);
 
-    void addUserTraining(UserDto userDto, Integer trainingId, Integer complete);
+    void addUserTraining(UserDto userDto, String trainingName, Integer doneEx);
 }

@@ -34,13 +34,13 @@ public class UserTrainingServiceImpl implements UserTrainingService {
     }
 
     @Override
-    public void addUserTraining(UserDto userDto, Integer trainingId, Integer complete) {
-        Training training = trainingDao.find(trainingId);
+    public void addUserTraining(UserDto userDto, String trainingName, Integer doneEx) {
+        Training training = trainingDao.findByName(trainingName);
         User user = User.builder()
                 .id(userDto.getId())
                 .build();
 
-        Integer xp = training.getXp() * complete / 100;
+        Integer xp = training.getXp() * doneEx / training.getExercises().size();
 
         userDao.updateXp(user, xp);
         userTrainingDao.save(
