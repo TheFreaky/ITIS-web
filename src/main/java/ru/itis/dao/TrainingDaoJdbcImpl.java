@@ -220,10 +220,20 @@ public class TrainingDaoJdbcImpl implements TrainingDao {
 
                 if (rs.getInt("exercise_id") == 0) continue;
 
-                trainings.get(trainings.size() - 1).getExercises().add(Exercise.builder()
-                        .id(rs.getInt("exercise_id"))
-                        .name(rs.getString("exercise_name"))
-                        .build());
+                Specialization exerciseType = null;
+                if (rs.getString("exercise_type") != null) {
+                    exerciseType = Specialization.valueOf(rs.getString("exercise_type"));
+                }
+
+                trainings.get(trainings.size() - 1).getExercises().add(
+                        Exercise.builder()
+                                .id(rs.getInt("exercise_id"))
+                                .name(rs.getString("exercise_name"))
+                                .type(exerciseType)
+                                .build()
+                );
+
+
             }
             return trainings;
         } catch (SQLException e) {
@@ -260,10 +270,15 @@ public class TrainingDaoJdbcImpl implements TrainingDao {
                             .complexity(complexity)
                             .build();
                 }
+                Specialization exerciseType = null;
+                if (rs.getString("exercise_type") != null) {
+                    exerciseType = Specialization.valueOf(rs.getString("exercise_type"));
+                }
 
                 exercises.add(Exercise.builder()
                         .id(rs.getInt("exercise_id"))
                         .name(rs.getString("exercise_name"))
+                        .type(exerciseType)
                         .build());
             }
             return training;

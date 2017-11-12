@@ -19,7 +19,7 @@ public class UserProfileDto {
     private Integer lvl;
     private Long xp;
     private Long xpToLvlUp;
-    private Byte progress;
+    private Integer progress;
     private Short strengthLvl;
     private Short strengthProgress;
     private Short staminaLvl;

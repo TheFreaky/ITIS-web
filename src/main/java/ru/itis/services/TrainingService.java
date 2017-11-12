@@ -20,4 +20,6 @@ public interface TrainingService {
     List<TrainingDto> getTrainingsSortedByComplexity(UserDto user);
 
     Training getTraining(String name, UserDto user);
+
+    void addUserTraining(UserDto userDto, String trainingName, Integer doneEx);
 }

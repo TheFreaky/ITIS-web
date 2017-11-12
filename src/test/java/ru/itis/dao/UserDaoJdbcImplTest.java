@@ -6,7 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import ru.itis.models.Specialization;
 import ru.itis.models.User;
-import ru.itis.utils.DBWrapper;
+import ru.itis.utils.DbWrapper;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class UserDaoJdbcImplTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        userDao = new UserDaoJdbcImpl(DBWrapper.getConnection());
+        userDao = new UserDaoJdbcImpl(DbWrapper.getConnection());
     }
 
     @AfterClass

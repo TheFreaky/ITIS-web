@@ -4,20 +4,20 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBWrapper {
+public class DbWrapper {
     private static Connection conn;
 
-    private DBWrapper() {
+    private DbWrapper() {
         conn = getLocalConnect();
     }
 
     public static Connection getConnection() {
         Connection localInstance = conn;
         if (localInstance == null) {
-            synchronized (DBWrapper.class) {
+            synchronized (DbWrapper.class) {
                 localInstance = conn;
                 if (localInstance == null) {
-                    new DBWrapper();
+                    new DbWrapper();
                     return conn;
                 }
             }

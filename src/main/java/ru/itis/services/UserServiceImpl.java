@@ -5,7 +5,9 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ru.itis.dao.UserDao;
 import ru.itis.dto.UserDto;
-import ru.itis.dto.UserSignInDto;
+import ru.itis.dto.UserRegistrationForm;
+import ru.itis.dto.UserSettingForm;
+import ru.itis.dto.UserSignInForm;
 import ru.itis.models.User;
 
 /**
@@ -26,13 +28,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto register(ru.itis.dto.UserRegistrationDto user) {
+    public UserDto register(UserRegistrationForm user) {
         // 1. Хешировать пароль
         String hashPassword = encoder.encode(user.getPassword());
         // 2. Сохранить в БД
         User model = User.builder()
                 .name(user.getName())
-                .login(user.getLogin())
+                .login(user.getLogin().toLowerCase())
                 .password(hashPassword)
                 .build();
         userDao.save(model);
@@ -44,8 +46,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto signIn(UserSignInDto user) {
-        User model = userDao.findByLogin(user.getLogin());
+    public UserDto signIn(UserSignInForm user) {
+        User model = userDao.findByLogin(user.getLogin().toLowerCase());
         if (model != null && encoder.matches(user.getPassword(), model.getPassword())) {
             return UserDto.builder()
                     .id(model.getId())
@@ -55,6 +57,15 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-
+    @Override
+    public void editUserData(UserSettingForm form, UserDto userDto) {
+        String hashPassword = encoder.encode(form.getPassword());
+        User model = User.builder()
+                .id(userDto.getId())
+                .login(form.getLogin().toLowerCase())
+                .password(hashPassword)
+                .build();
+        userDao.update(model);
+    }
 
 }

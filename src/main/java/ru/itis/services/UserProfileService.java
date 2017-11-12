@@ -1,6 +1,8 @@
 package ru.itis.services;
 
+import ru.itis.dto.UserDto;
 import ru.itis.dto.UserProfileDto;
+import ru.itis.dto.UserProfileForm;
 
 /**
  * 07.11.2017
@@ -11,5 +13,5 @@ import ru.itis.dto.UserProfileDto;
 public interface UserProfileService {
     UserProfileDto getUserProfile(Long id);
 
-    UserProfileDto editUserProfile(UserProfileDto profile);
+    UserDto editUserProfile(UserProfileForm profile, UserDto userDto);
 }

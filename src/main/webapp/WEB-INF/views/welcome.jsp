@@ -118,7 +118,7 @@
                                 <form class="sa-innate-form" method="post" action="<c:url value="/signup"/>">
                                     <label for="signup-name">Имя:</label>
                                     <input id="signup-name" type="text" name="signup-name"
-                                    <%--@elvariable id="user" type="ru.itis.dto.UserRegistrationDto"--%>
+                                    <%--@elvariable id="user" type="ru.itis.dto.UserRegistrationForm"--%>
                                     <c:if test="${not empty user}">
                                            value="${user.name}"
                                     </c:if>

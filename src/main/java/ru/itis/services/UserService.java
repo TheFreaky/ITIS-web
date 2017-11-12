@@ -1,8 +1,9 @@
 package ru.itis.services;
 
 import ru.itis.dto.UserDto;
-import ru.itis.dto.UserRegistrationDto;
-import ru.itis.dto.UserSignInDto;
+import ru.itis.dto.UserRegistrationForm;
+import ru.itis.dto.UserSettingForm;
+import ru.itis.dto.UserSignInForm;
 
 /**
  * 05.11.2017
@@ -11,7 +12,9 @@ import ru.itis.dto.UserSignInDto;
  * @version v1.0
  */
 public interface UserService {
-    UserDto register(UserRegistrationDto user);
+    UserDto register(UserRegistrationForm user);
 
-    UserDto signIn(UserSignInDto user);
+    UserDto signIn(UserSignInForm user);
+
+    void editUserData(UserSettingForm form, UserDto userDto);
 }

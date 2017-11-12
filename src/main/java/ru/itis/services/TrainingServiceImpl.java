@@ -2,12 +2,15 @@ package ru.itis.services;
 
 import ru.itis.dao.TrainingDao;
 import ru.itis.dao.UserDao;
+import ru.itis.dao.UserTrainingDao;
 import ru.itis.dto.TrainingDto;
 import ru.itis.dto.UserDto;
 import ru.itis.models.Training;
 import ru.itis.models.User;
-import ru.itis.utils.UserLevelUtil;
+import ru.itis.models.UserTraining;
+import ru.itis.utils.LevelUtil;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -21,10 +24,12 @@ import java.util.stream.Collectors;
 public class TrainingServiceImpl implements TrainingService {
     private final UserDao userDao;
     private final TrainingDao trainingDao;
+    private final UserTrainingDao userTrainingDao;
 
-    public TrainingServiceImpl(UserDao userDao, TrainingDao trainingDao) {
+    public TrainingServiceImpl(UserDao userDao, TrainingDao trainingDao, UserTrainingDao userTrainingDao) {
         this.userDao = userDao;
         this.trainingDao = trainingDao;
+        this.userTrainingDao = userTrainingDao;
     }
 
     @Override
@@ -50,14 +55,33 @@ public class TrainingServiceImpl implements TrainingService {
         }
 
         User user = userDao.find(userDto.getId());
-        if (training.getMinLvl() > UserLevelUtil.getLvl(user.getXp())) {
+        if (training.getMinLvl() > LevelUtil.getLvl(user.getXp())) {
             training = null;
         }
         return training;
     }
 
+    @Override
+    public void addUserTraining(UserDto userDto, String trainingName, Integer doneEx) {
+        Training training = trainingDao.findByName(trainingName);
+        User user = User.builder()
+                .id(userDto.getId())
+                .build();
+
+        Integer xp = training.getXp() * doneEx / training.getExercises().size();
+
+        userDao.updateXp(user, xp);
+        userTrainingDao.save(
+                UserTraining.builder()
+                        .date(LocalDate.now())
+                        .user(user)
+                        .training(training)
+                        .build()
+        );
+    }
+
     private List<TrainingDto> trainingToTrainingDto (UserDto user, Function<Integer, List<Training>> function) {
-        Integer lvl = UserLevelUtil.getLvl(userDao.find(user.getId()).getXp());
+        Integer lvl = LevelUtil.getLvl(userDao.find(user.getId()).getXp());
         return function.apply(lvl).stream()
                 .map(training -> TrainingDto.builder()
                         .name(training.getName())

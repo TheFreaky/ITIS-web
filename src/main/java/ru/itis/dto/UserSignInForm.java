@@ -11,7 +11,7 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class UserSignInDto {
+public class UserSignInForm {
     private String login;
     private String password;
 }

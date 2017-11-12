@@ -6,7 +6,7 @@ import org.junit.Test;
 import ru.itis.models.Training;
 import ru.itis.models.User;
 import ru.itis.models.UserTraining;
-import ru.itis.utils.DBWrapper;
+import ru.itis.utils.DbWrapper;
 
 import java.sql.Connection;
 import java.time.LocalDate;
@@ -27,7 +27,7 @@ public class UserTrainingDaoJdbcImplTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        Connection conn = DBWrapper.getConnection();
+        Connection conn = DbWrapper.getConnection();
         userDao = new UserDaoJdbcImpl(conn);
         userTrainingDao = new UserTrainingDaoJdbcImpl(conn, new TrainingDaoJdbcImpl(conn), userDao);
         user = User.builder()

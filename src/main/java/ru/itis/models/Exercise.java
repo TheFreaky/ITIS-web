@@ -16,4 +16,5 @@ import lombok.Data;
 public class Exercise {
     private Integer id;
     private String name;
+    private Specialization type;
 }

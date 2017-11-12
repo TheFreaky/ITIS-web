@@ -6,7 +6,7 @@ package ru.itis.utils;
  * @author Kuznetsov Maxim
  * @version v1.0
  */
-public class UserLevelUtil {
+public class LevelUtil {
     public static int getLvl(Long xp) {
         return (int) ((Math.sqrt(625 + 100 * xp) - 25) / 50);
     }

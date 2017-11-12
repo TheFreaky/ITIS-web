@@ -6,7 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import ru.itis.models.Complexity;
 import ru.itis.models.Training;
-import ru.itis.utils.DBWrapper;
+import ru.itis.utils.DbWrapper;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class TrainingDaoJdbcImplTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        trainingDao = new TrainingDaoJdbcImpl(DBWrapper.getConnection());
+        trainingDao = new TrainingDaoJdbcImpl(DbWrapper.getConnection());
     }
 
     @AfterClass
