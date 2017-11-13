@@ -20,7 +20,7 @@ public class UserFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        permittedWithoutSignIn = Sets.newHashSet("welcome", "signin", "signup");
+        permittedWithoutSignIn = Sets.newHashSet("welcome", "signin", "signup", "resources");
     }
 
     @Override
@@ -30,6 +30,9 @@ public class UserFilter implements Filter {
         HttpSession session = req.getSession();
 
         String path = req.getRequestURI().replace(req.getContextPath() + "/", "");
+        if (path.contains("/")) {
+            path = path.substring(0, path.indexOf("/"));
+        }
 
         if (session.getAttribute("user") == null) {
             if (permittedWithoutSignIn.contains(path)) {

@@ -38,8 +38,8 @@ public class TrainingServlet extends HttpServlet {
         UserDto userDto = (UserDto) req.getSession().getAttribute("user");
 
         Integer doneEx = 0;
-        if (req.getParameterValues("exercise") != null) {
-            doneEx = req.getParameterValues("exercise").length;
+        if (req.getParameterValues("training-exercise") != null) {
+            doneEx = req.getParameterValues("training-exercise").length;
         }
         String trainingName = req.getParameter("training-name");
 

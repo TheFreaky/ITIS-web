@@ -11,8 +11,8 @@ public class UserDaoJdbcImpl implements UserDao {
     private Connection connection;
 
     private final static String SQL_INSERT = "INSERT INTO users (user_login, user_password, user_name, user_weight, " +
-            "user_height, user_specialization, user_xp, user_strength, user_stamina, user_flexibility, user_gender) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "user_height, user_gender) " +
+            "VALUES (?, ?, ?, ?, ?, ?)";
     private final static String SQL_SELECT_ALL = "SELECT * FROM users";
     private final static String SQL_SELECT_BY_LOGIN = "SELECT * FROM users WHERE user_login = ?";
     private final static String SQL_SELECT_BY_ID = "SELECT * FROM users WHERE user_id = ?";
@@ -37,16 +37,7 @@ public class UserDaoJdbcImpl implements UserDao {
             stmt.setString(3, model.getName());
             stmt.setObject(4, model.getWeight());
             stmt.setObject(5, model.getHeight());
-            if (model.getSpecialization() != null) {
-                stmt.setString(6, model.getSpecialization().toString());
-            } else {
-                stmt.setObject(6, model.getSpecialization());
-            }
-            stmt.setObject(7, model.getXp());
-            stmt.setObject(8, model.getStrength());
-            stmt.setObject(9, model.getStamina());
-            stmt.setObject(10, model.getFlexibility());
-            stmt.setObject(11, model.getGender());
+            stmt.setObject(6, model.getGender());
             stmt.executeUpdate();
 
             ResultSet resultSet = stmt.getGeneratedKeys();
@@ -121,6 +112,9 @@ public class UserDaoJdbcImpl implements UserDao {
             stmt.setLong(12, model.getId());
             stmt.execute();
         } catch (SQLException e) {
+            if (e.getSQLState().startsWith("23")) { //integrity constraint violation
+                throw new IllegalArgumentException("Xp can't be less than zero.", e);
+            }
             throw new IllegalArgumentException(e);
         }
     }

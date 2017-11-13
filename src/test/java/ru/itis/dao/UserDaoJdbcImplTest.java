@@ -28,7 +28,7 @@ public class UserDaoJdbcImplTest {
 
     @AfterClass
     public static void tearDown() throws Exception {
-        Lists.newArrayList("Save_test", "Update_test", "Save_test_enum", "Update_test_enum")
+        Lists.newArrayList("Save_test", "Save_test_error", "Update_test", "Save_test_enum", "Update_test_enum")
                 .forEach(s -> {
                     User user = userDao.findByLogin(s);
                     if (user != null) {
@@ -52,15 +52,16 @@ public class UserDaoJdbcImplTest {
 
 
     @Test(expected = IllegalArgumentException.class)
-    public void saveNegativeXp() throws Exception {
+    public void updateNegativeXp() throws Exception {
         User user = User.builder()
                 .name("Test")
                 .gender(true)
-                .login("Save_test")
+                .login("Save_test_error")
                 .password("qwerty123")
-                .xp(-1L)
                 .build();
         userDao.save(user);
+        user.setXp(-1L);
+        userDao.update(user);
         assertNotNull(user);
         assertNotNull(user.getId());
     }

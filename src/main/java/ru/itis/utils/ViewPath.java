@@ -15,6 +15,5 @@ public class ViewPath {
     final public static String TRAININGS_PAGE = VIEWS_PATH + "trainings.jsp";
     final public static String TRAINING_PAGE = VIEWS_PATH + "training.jsp";
     final public static String PROFILE_PAGE = VIEWS_PATH + "profile.jsp";
-    final public static String SETTING_PAGE = VIEWS_PATH + "settingx.jsp";
-    final public static String ERROR_PAGE = VIEWS_PATH + "error.jsp";
+    final public static String SETTING_PAGE = VIEWS_PATH + "setting.jsp";
 }
