@@ -5,7 +5,7 @@ import ru.itis.dto.UserDto;
 import ru.itis.services.TrainingService;
 import ru.itis.services.TrainingServiceImpl;
 import ru.itis.utils.DbWrapper;
-import ru.itis.utils.ViewPath;
+import ru.itis.utils.ViewPathConfig;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -56,7 +56,7 @@ public class TrainingServlet extends HttpServlet {
         //ToDo: check in jsp not null, if null u lvl too small
         req.setAttribute("training", trainingService.getTraining(trainingName, userDto));
 
-        RequestDispatcher dispatcher = req.getRequestDispatcher(ViewPath.TRAINING_PAGE);
+        RequestDispatcher dispatcher = req.getRequestDispatcher(ViewPathConfig.TRAINING_PAGE);
         if (dispatcher != null) {
             dispatcher.forward(req, resp);
         }

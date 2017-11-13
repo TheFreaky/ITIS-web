@@ -6,7 +6,7 @@ import ru.itis.dto.UserSignInForm;
 import ru.itis.services.UserService;
 import ru.itis.services.UserServiceImpl;
 import ru.itis.utils.DbWrapper;
-import ru.itis.utils.ViewPath;
+import ru.itis.utils.ViewPathConfig;
 import ru.itis.validators.UserSignInFormValidator;
 import ru.itis.validators.Validator;
 
@@ -57,7 +57,7 @@ public class SignInServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/trainings");
         } else {
             req.setAttribute("signinErrors", errors);
-            req.getRequestDispatcher(ViewPath.WELCOME_PAGE).forward(req, resp);
+            req.getRequestDispatcher(ViewPathConfig.WELCOME_PAGE).forward(req, resp);
         }
     }
 }

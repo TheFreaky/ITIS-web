@@ -1,5 +1,6 @@
 package ru.itis.services;
 
+import com.google.common.collect.ImmutableMap;
 import ru.itis.dao.UserDao;
 import ru.itis.dao.UserTrainingDao;
 import ru.itis.dto.UserDto;
@@ -7,9 +8,8 @@ import ru.itis.dto.UserProfileDto;
 import ru.itis.dto.UserProfileForm;
 import ru.itis.models.User;
 import ru.itis.models.UserTraining;
-import ru.itis.utils.LevelUtil;
+import ru.itis.servlets.LevelService;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -79,16 +79,11 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
     private Map<String, ? super Number> getXpDetails(Long xp) {
-        Map<String, ? super Number> xpDetails = new HashMap<>();
-
-        Integer lvl = LevelUtil.getLvl(xp);
-        Long xpToCurrentLvl = LevelUtil.getXpForLvl(lvl);
-        Long xpToLvlUp = LevelUtil.getXpForLvl(lvl + 1);
+        Integer lvl = LevelService.getLvl(xp);
+        Long xpToCurrentLvl = LevelService.getXpForLvl(lvl);
+        Long xpToLvlUp = LevelService.getXpForLvl(lvl + 1);
         Integer progress = Math.toIntExact((xp - xpToCurrentLvl) * 100 / (xpToLvlUp - xpToCurrentLvl));
 
-        xpDetails.put("lvl", lvl);
-        xpDetails.put("lvl up", xpToLvlUp);
-        xpDetails.put("progress", progress);
-        return xpDetails;
+        return ImmutableMap.of("lvl", lvl,"lvl up", xpToLvlUp,"progress", progress);
     }
 }

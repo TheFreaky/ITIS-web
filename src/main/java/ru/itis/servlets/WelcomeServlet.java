@@ -1,6 +1,6 @@
 package ru.itis.servlets;
 
-import ru.itis.utils.ViewPath;
+import ru.itis.utils.ViewPathConfig;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 public class WelcomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher(ViewPath.WELCOME_PAGE);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(ViewPathConfig.WELCOME_PAGE);
         if (dispatcher != null) {
             dispatcher.forward(request, response);
         }

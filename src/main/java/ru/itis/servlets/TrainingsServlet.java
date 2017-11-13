@@ -6,7 +6,7 @@ import ru.itis.dto.UserDto;
 import ru.itis.services.TrainingService;
 import ru.itis.services.TrainingServiceImpl;
 import ru.itis.utils.DbWrapper;
-import ru.itis.utils.ViewPath;
+import ru.itis.utils.ViewPathConfig;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -42,7 +42,7 @@ public class TrainingsServlet extends HttpServlet {
 
         req.setAttribute("trainings", getTrainings(sort, userDto));
 
-        RequestDispatcher dispatcher = req.getRequestDispatcher(ViewPath.TRAININGS_PAGE);
+        RequestDispatcher dispatcher = req.getRequestDispatcher(ViewPathConfig.TRAININGS_PAGE);
         if (dispatcher != null) {
             dispatcher.forward(req, resp);
         }

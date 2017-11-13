@@ -38,7 +38,6 @@
         <servlet-name>welcome</servlet-name>
         <url-pattern>/welcome</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>trainings</servlet-name>
         <servlet-class>ru.itis.servlets.TrainingsServlet</servlet-class>

@@ -8,7 +8,7 @@ import ru.itis.dto.UserDto;
 import ru.itis.models.Training;
 import ru.itis.models.User;
 import ru.itis.models.UserTraining;
-import ru.itis.utils.LevelUtil;
+import ru.itis.servlets.LevelService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -55,7 +55,7 @@ public class TrainingServiceImpl implements TrainingService {
         }
 
         User user = userDao.find(userDto.getId());
-        if (training.getMinLvl() > LevelUtil.getLvl(user.getXp())) {
+        if (training.getMinLvl() > LevelService.getLvl(user.getXp())) {
             training = null;
         }
         return training;
@@ -81,7 +81,7 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     private List<TrainingDto> trainingToTrainingDto (UserDto user, Function<Integer, List<Training>> function) {
-        Integer lvl = LevelUtil.getLvl(userDao.find(user.getId()).getXp());
+        Integer lvl = LevelService.getLvl(userDao.find(user.getId()).getXp());
         return function.apply(lvl).stream()
                 .map(training -> TrainingDto.builder()
                         .name(training.getName())

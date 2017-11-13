@@ -7,7 +7,7 @@ import ru.itis.dto.UserProfileForm;
 import ru.itis.services.UserProfileService;
 import ru.itis.services.UserProfileServiceImpl;
 import ru.itis.utils.DbWrapper;
-import ru.itis.utils.ViewPath;
+import ru.itis.utils.ViewPathConfig;
 import ru.itis.validators.UserProfileFormValidator;
 import ru.itis.validators.Validator;
 
@@ -62,7 +62,7 @@ public class UserProfileServlet extends HttpServlet {
         } else {
             req.setAttribute("userProfile", form);
             req.setAttribute("profileErrors", errors);
-            req.getRequestDispatcher(ViewPath.PROFILE_PAGE).forward(req, resp);
+            req.getRequestDispatcher(ViewPathConfig.PROFILE_PAGE).forward(req, resp);
         }
     }
 
@@ -71,7 +71,7 @@ public class UserProfileServlet extends HttpServlet {
         UserProfileDto userProfile = userProfileService.getUserProfile(userDto.getId());
         req.setAttribute("userProfile", userProfile);
 
-        RequestDispatcher dispatcher = req.getRequestDispatcher(ViewPath.PROFILE_PAGE);
+        RequestDispatcher dispatcher = req.getRequestDispatcher(ViewPathConfig.PROFILE_PAGE);
         if (dispatcher != null) {
             dispatcher.forward(req, resp);
         }

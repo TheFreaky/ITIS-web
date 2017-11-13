@@ -6,7 +6,7 @@ import ru.itis.dto.UserSettingForm;
 import ru.itis.services.UserService;
 import ru.itis.services.UserServiceImpl;
 import ru.itis.utils.DbWrapper;
-import ru.itis.utils.ViewPath;
+import ru.itis.utils.ViewPathConfig;
 import ru.itis.validators.UserSettingFormValidator;
 import ru.itis.validators.Validator;
 
@@ -52,12 +52,12 @@ public class SettingServlet extends HttpServlet {
         } else {
             req.setAttribute("setting", form);
             req.setAttribute("settingErrors", errors);
-            req.getRequestDispatcher(ViewPath.SETTING_PAGE).forward(req, resp);
+            req.getRequestDispatcher(ViewPathConfig.SETTING_PAGE).forward(req, resp);
         }
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher dispatcher = req.getRequestDispatcher(ViewPath.SETTING_PAGE);
+        RequestDispatcher dispatcher = req.getRequestDispatcher(ViewPathConfig.SETTING_PAGE);
         if (dispatcher != null) {
             dispatcher.forward(req, resp);
         }

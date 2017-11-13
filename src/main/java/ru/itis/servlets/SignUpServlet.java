@@ -6,7 +6,7 @@ import ru.itis.dto.UserRegistrationForm;
 import ru.itis.services.UserService;
 import ru.itis.services.UserServiceImpl;
 import ru.itis.utils.DbWrapper;
-import ru.itis.utils.ViewPath;
+import ru.itis.utils.ViewPathConfig;
 import ru.itis.validators.UserRegistrationFormValidator;
 import ru.itis.validators.Validator;
 
@@ -55,7 +55,7 @@ public class SignUpServlet extends HttpServlet {
         } else {
             req.setAttribute("user", form);
             req.setAttribute("signupErrors", errors);
-            req.getRequestDispatcher(ViewPath.WELCOME_PAGE).forward(req, resp);
+            req.getRequestDispatcher(ViewPathConfig.WELCOME_PAGE).forward(req, resp);
         }
     }
 }

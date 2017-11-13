@@ -1,4 +1,4 @@
-package ru.itis.utils;
+package ru.itis.servlets;
 
 /**
  * 05.11.2017
@@ -6,7 +6,7 @@ package ru.itis.utils;
  * @author Kuznetsov Maxim
  * @version v1.0
  */
-public class LevelUtil {
+public class LevelService {
     public static Integer getLvl(Long xp) {
         return (int) ((Math.sqrt(625 + 100 * xp) - 25) / 50);
     }
