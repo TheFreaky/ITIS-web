@@ -44,9 +44,15 @@ public class SignInServlet extends HttpServlet {
                 .login(req.getParameter("signin-username"))
                 .build();
         List<String> errors = validator.validate(form);
-
+        UserDto user = null;
         if (errors.isEmpty()) {
-            UserDto user = userService.signIn(form);
+            user = userService.signIn(form);
+
+            if (user == null) {
+                errors.add("Invalid email or login!");
+            }
+        }
+        if (errors.isEmpty()) {
             req.getSession().setAttribute("user", user);
             resp.sendRedirect(req.getContextPath() + "/trainings");
         } else {

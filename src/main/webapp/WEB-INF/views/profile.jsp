@@ -15,7 +15,20 @@
     <meta charset="UTF-8">
     <title>Title</title>
 
-    <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.css"/>">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <link type="text/css"
+          href="http://coreplusdemo.lorvent.com/A.css,,_app.css+vendors,,_jasny-bootstrap,,_css,,_jasny-bootstrap.css+vendors,,_select2,,_css,,_select2.min.css+vendors,,_select2,,_css,,_select2-bootstrap.css+vendors,,_bootstrapvalidator,,_css,,_bootstrapValidator.min.css+vendors,,_datetimepicker,,_css,,_bootstrap-datetimepicker.min.css,Mcc.iJBuO24LbF.css.pagespeed.cf.wwL0jY3rho.css"
+    rel="stylesheet"/>
+    <link href="http://coreplusdemo.lorvent.com/css/buttons_sass.css"
+          rel="stylesheet"
+    type="text/css"/>
+    <link type="text/css"
+          href="http://coreplusdemo.lorvent.com/A.css,,_app.css+css,,_custom.css+vendors,,_simple-line-icons,,_css,,_simple-line-icons.css+css,,_custom_css,,_user_profile.css,Mcc.YDRojCQWPN.css.pagespeed.cf.f_4TVswlNK.css"
+    rel="stylesheet"/>
+
+    <link href="<c:url value="/resources/css/style.css"/>" type="text/css" rel="stylesheet">
+
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -23,18 +36,7 @@
 
     <script src="http://coreplusdemo.lorvent.com/js/app.js.pagespeed.jm.Xs4nyYH02x.js" type="text/javascript"></script>
 
-    <link type="text/css"
-          href="http://coreplusdemo.lorvent.com/A.css,,_app.css+vendors,,_jasny-bootstrap,,_css,,_jasny-bootstrap.css+vendors,,_select2,,_css,,_select2.min.css+vendors,,_select2,,_css,,_select2-bootstrap.css+vendors,,_bootstrapvalidator,,_css,,_bootstrapValidator.min.css+vendors,,_datetimepicker,,_css,,_bootstrap-datetimepicker.min.css,Mcc.iJBuO24LbF.css.pagespeed.cf.wwL0jY3rho.css"
-          rel="stylesheet"/>
-    <link href="http://coreplusdemo.lorvent.com/css/buttons_sass.css"
-          rel="stylesheet"
-          type="text/css"/>
-    <link type="text/css"
-          href="http://coreplusdemo.lorvent.com/A.css,,_app.css+css,,_custom.css+vendors,,_simple-line-icons,,_css,,_simple-line-icons.css+css,,_custom_css,,_user_profile.css,Mcc.YDRojCQWPN.css.pagespeed.cf.f_4TVswlNK.css"
-          rel="stylesheet"/>
-    <link href="<c:url value="/resources/css/style.css"/>"
-          type="text/css"
-          rel="stylesheet">
+
 
     <style>
         .edit-user-content .panel {
@@ -105,6 +107,10 @@
                                     </h3>
                                 </div>
                                 <div class="panel-body">
+                                    <%--@elvariable id="profileErrors" type="java.util.List"--%>
+                                    <c:forEach items="${profileErrors}" var="error">
+                                        <div class="text-danger">* ${error}</div>
+                                    </c:forEach>
                                     <form id="adduser_form" method="POST" action="<c:url value="/profile"/>" class="form-horizontal bv-form"
                                           novalidate="novalidate">
                                         <button type="submit" class="bv-hidden-submit"
@@ -114,7 +120,7 @@
                                             <div class="form-group">
                                                 <label for="name" class="col-sm-2 control-label">Name</label>
                                                 <div class="col-sm-10">
-                                                    <input id="name" name="name" type="text" placeholder="Name"
+                                                    <input id="name" name="edit-name" type="text" placeholder="Name"
                                                            class="form-control required" value="${userProfile.name}">
                                                 </div>
                                             </div>
@@ -124,7 +130,7 @@
                                                 <label for="gender" class="col-sm-2 control-label">Gender</label>
                                                 <div class="col-sm-10">
                                                     <select class="form-control" id="gender" title="Select Gender"
-                                                            name="gender" tabindex="-1" aria-hidden="true"
+                                                            name="edit-gender" tabindex="-1" aria-hidden="true"
                                                             data-bv-field="gender"
                                                             style="box-sizing: border-box;border: 1px solid;border-color: #979797 #DDD #DEDEDE;.border-radius: 2px;background: -webkit-gradient(linear,left top,left bottom,from(#F5F5F5),to(#FDFDFD));">
                                                         <option disabled="">Select Gender</option>
@@ -148,7 +154,7 @@
                                             <div class="form-group">
                                                 <label for="weight" class="col-sm-2 control-label">Weight</label>
                                                 <div class="col-sm-10">
-                                                    <input id="weight" name="weight" type="number" min="30" max="350"
+                                                    <input id="weight" name="edit-weight" type="number" min="30" max="350"
                                                            value="${userProfile.weight}" class="form-control required">
                                                 </div>
                                             </div>
@@ -157,7 +163,7 @@
                                             <div class="form-group">
                                                 <label for="height" class="col-sm-2 control-label">Height</label>
                                                 <div class="col-sm-10">
-                                                    <input id="height" name="height" type="number" min="50" max="250"
+                                                    <input id="height" name="edit-height" type="number" min="50" max="250"
                                                            value="${userProfile.height}" class="form-control required">
                                                 </div>
                                             </div>
@@ -192,7 +198,7 @@
                             <div class="progress progress-xs">
                                 <div class="progress-bar" role="progressbar" aria-valuenow="${userProfile.progress}"
                                      aria-valuemin="0"
-                                     aria-valuemax="100" style="width: 80%">
+                                     aria-valuemax="100" style="width: ${userProfile.progress}%">
                                     <span class="show">${userProfile.xp}/${userProfile.xpToLvlUp}</span>
                                 </div>
                             </div>
@@ -215,10 +221,10 @@
                                     </p>
                                     <div class="progress progress-xs">
                                         <div class="progress-bar progress-bar-success" role="progressbar"
-                                             aria-valuenow="${userProfile.staminaProgress}" aria-valuemin="0"
+                                             aria-valuenow="${userProfile.flexibilityProgress}" aria-valuemin="0"
                                              aria-valuemax="100"
-                                             style="width: 30%">
-                                            <span class="show">${userProfile.staminaProgress}/100</span>
+                                             style="width: ${userProfile.flexibilityProgress}%">
+                                            <span class="show">${userProfile.flexibilityProgress}/100</span>
                                         </div>
                                     </div>
                                 </div>
@@ -233,7 +239,7 @@
                                         <div class="progress-bar progress-bar-warning" role="progressbar"
                                              aria-valuenow="${userProfile.staminaProgress}" aria-valuemin="0"
                                              aria-valuemax="100"
-                                             style="width: 40%">
+                                             style="width: ${userProfile.staminaProgress}%">
                                             <span class="show">${userProfile.staminaProgress}/100</span>
                                         </div>
                                     </div>
@@ -249,7 +255,7 @@
                                         <div class="progress-bar progress-bar-info" role="progressbar"
                                              aria-valuenow="${userProfile.strengthProgress}" aria-valuemin="0"
                                              aria-valuemax="100"
-                                             style="width: 50%">
+                                             style="width: ${userProfile.strengthProgress}%">
                                             <span class="show">${userProfile.strengthProgress}/100</span>
                                         </div>
                                     </div>

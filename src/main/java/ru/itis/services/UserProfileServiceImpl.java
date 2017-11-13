@@ -51,12 +51,12 @@ public class UserProfileServiceImpl implements UserProfileService {
                 .progress((Integer) userXpDetails.get("progress"))
                 .lvl((Integer) userXpDetails.get("lvl"))
                 .xpToLvlUp((Long) userXpDetails.get("lvl up"))
-                .strengthLvl((Short) strengthDetails.get("lvl"))
-                .strengthProgress((Short) strengthDetails.get("progress"))
-                .staminaLvl((Short) staminaDetails.get("lvl"))
-                .staminaProgress((Short) staminaDetails.get("progress"))
-                .flexibilityLvl((Short) flexibilityDetails.get("lvl"))
-                .flexibilityProgress((Short) flexibilityDetails.get("progress"))
+                .strengthLvl((Integer) strengthDetails.get("lvl"))
+                .strengthProgress((Integer) strengthDetails.get("progress"))
+                .staminaLvl((Integer) staminaDetails.get("lvl"))
+                .staminaProgress((Integer) staminaDetails.get("progress"))
+                .flexibilityLvl((Integer) flexibilityDetails.get("lvl"))
+                .flexibilityProgress((Integer) flexibilityDetails.get("progress"))
                 .gender(user.getGender())
                 .userTrainings(userTrainings)
                 .build();
@@ -65,17 +65,16 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public UserDto editUserProfile(UserProfileForm profile, UserDto userDto) {
-        User model = User.builder()
-                .id(userDto.getId())
-                .name(profile.getName())
-                .weight(Float.valueOf(profile.getWeight()))
-                .height(Short.valueOf(profile.getHeight()))
-                .gender(Boolean.valueOf(profile.getGender()))
-                .build();
-        userDao.save(model);
+        User user = userDao.find(userDto.getId());
+        user.setName(profile.getName());
+        user.setName(profile.getName());
+        user.setWeight(Float.valueOf(profile.getWeight()));
+        user.setHeight(Short.valueOf(profile.getHeight()));
+        user.setGender(Boolean.valueOf(profile.getGender()));
+        userDao.update(user);
         return UserDto.builder()
-                .id(userDto.getId())
-                .name(model.getName())
+                .id(user.getId())
+                .name(user.getName())
                 .build();
     }
 

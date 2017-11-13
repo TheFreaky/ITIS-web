@@ -28,7 +28,7 @@ public class TrainingDaoJdbcImplTest {
 
     @AfterClass
     public static void tearDown() throws Exception {
-        Lists.newArrayList("TestSave", "TestUpdate")
+        Lists.newArrayList("TestSave", "TestSaveNoEx", "TestUpdate")
                 .forEach(s -> {
                     Training training = trainingDao.findByName(s);
                     if (training != null) {
@@ -53,7 +53,15 @@ public class TrainingDaoJdbcImplTest {
 
     @Test
     public void findWithoutExercises() throws Exception {
-        Training training = trainingDao.find(3);
+        Training training = Training.builder()
+                .name("TestSaveNoEx")
+                .description("test")
+                .xp(0)
+                .minLvl((short) 1)
+                .complexity(Complexity.Advanced)
+                .build();
+        trainingDao.save(training);
+        training = trainingDao.find(training.getId());
         assertNotNull(training);
         assertNotNull(training.getId());
         assertNotNull(training.getName());
@@ -61,7 +69,7 @@ public class TrainingDaoJdbcImplTest {
         assertNotNull(training.getXp());
         assertNotNull(training.getMinLvl());
         assertNotNull(training.getExercises());
-        assertTrue(training.getName().equals("Test"));
+        assertTrue(training.getName().equals("TestSaveNoEx"));
     }
 
     @Test

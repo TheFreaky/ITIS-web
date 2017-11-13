@@ -21,7 +21,7 @@ public class UserTrainingDaoJdbcImpl implements UserTrainingDao {
     private final static String SQL_INSERT = "INSERT INTO users_trainings (user_id, training_id, date) " +
             "VALUES (?, ?, ?)";
     private final static String SQL_SELECT_ALL = "SELECT * FROM users_trainings";
-    private final static String SQL_SELECT_BY_USER = "SELECT * FROM users_trainings WHERE user_id = ?";
+    private final static String SQL_SELECT_BY_USER = "SELECT * FROM users_trainings WHERE user_id = ? ORDER BY date DESC LIMIT 10";
     private final static String SQL_SELECT_BY_ID = "SELECT * FROM users_trainings WHERE id = ?";
     private final static String SQL_UPDATE = "UPDATE users_trainings SET (user_id, training_id, date) = " +
             "(?, ?, ?) WHERE id = ?";

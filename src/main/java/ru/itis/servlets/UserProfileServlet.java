@@ -48,7 +48,7 @@ public class UserProfileServlet extends HttpServlet {
                 .name(req.getParameter("edit-name"))
                 .gender(req.getParameter("edit-gender"))
                 .weight(req.getParameter("edit-weight"))
-                .height(req.getParameter("edit-gender"))
+                .height(req.getParameter("edit-height"))
                 .build();
 
         List<String> errors = validator.validate(form);
@@ -60,7 +60,7 @@ public class UserProfileServlet extends HttpServlet {
 
             resp.sendRedirect(req.getContextPath() + "/profile");
         } else {
-            req.setAttribute("profile", form);
+            req.setAttribute("userProfile", form);
             req.setAttribute("profileErrors", errors);
             req.getRequestDispatcher(ViewPath.PROFILE_PAGE).forward(req, resp);
         }

@@ -59,7 +59,7 @@
 
     <servlet>
         <servlet-name>training</servlet-name>
-        <servlet-class>ru.itis.servlets.TrainingsServlet</servlet-class>
+        <servlet-class>ru.itis.servlets.TrainingServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>training</servlet-name>

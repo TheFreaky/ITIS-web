@@ -59,13 +59,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void editUserData(UserSettingForm form, UserDto userDto) {
+        User user = userDao.find(userDto.getId());
         String hashPassword = encoder.encode(form.getPassword());
-        User model = User.builder()
-                .id(userDto.getId())
-                .login(form.getLogin().toLowerCase())
-                .password(hashPassword)
-                .build();
-        userDao.update(model);
+        user.setLogin(form.getLogin().toLowerCase());
+        user.setPassword(hashPassword);
+        userDao.update(user);
     }
 
 }

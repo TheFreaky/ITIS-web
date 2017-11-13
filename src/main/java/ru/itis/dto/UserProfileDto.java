@@ -20,12 +20,12 @@ public class UserProfileDto {
     private Long xp;
     private Long xpToLvlUp;
     private Integer progress;
-    private Short strengthLvl;
-    private Short strengthProgress;
-    private Short staminaLvl;
-    private Short staminaProgress;
-    private Short flexibilityLvl;
-    private Short flexibilityProgress;
+    private Integer strengthLvl;
+    private Integer strengthProgress;
+    private Integer staminaLvl;
+    private Integer staminaProgress;
+    private Integer flexibilityLvl;
+    private Integer flexibilityProgress;
     private Boolean gender;
     private List<UserTraining> userTrainings;
 }

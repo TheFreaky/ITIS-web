@@ -15,8 +15,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
 
-    <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.css"/>">
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
             crossorigin="anonymous"></script>
@@ -82,9 +81,12 @@
                 </div>
 
                 <div class="panel-body">
-                    <form id="adduser_form" method="POST" action="<c:url value="/setting"/>" enctype="multipart/form-data" class="form-horizontal bv-form"
+                    <form id="adduser_form" method="POST" action="<c:url value="/setting"/>" class="form-horizontal bv-form"
                           novalidate="novalidate">
-                        <h2 class="hidden">&nbsp;</h2>
+                        <%--@elvariable id="settingErrors" type="java.util.List"--%>
+                        <c:forEach items="${settingErrors}" var="error">
+                            <div class="text-danger">* ${error}</div>
+                        </c:forEach>
                         <div class="form-group">
                             <label for="email" class="col-md-2 control-label">Email</label>
                             <div class="col-md-10">
@@ -96,7 +98,7 @@
                         <div class="form-group">
                             <label for="password" class="col-md-2 control-label">Password</label>
                             <div class="col-md-10">
-                                <input id="password" name="setting-password"" type="password" placeholder="Password"
+                                <input id="password" name="setting-password" type="password" placeholder="Password"
                                        class="form-control required" data-bv-field="password">
                             </div>
                         </div>

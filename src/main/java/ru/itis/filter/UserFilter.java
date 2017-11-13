@@ -17,10 +17,12 @@ import java.util.Set;
  */
 public class UserFilter implements Filter {
     Set<String> permittedWithoutSignIn;
+    Set<String> resources;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        permittedWithoutSignIn = Sets.newHashSet("welcome", "signin", "signup", "resources");
+        permittedWithoutSignIn = Sets.newHashSet("welcome", "signin", "signup");
+        resources = Sets.newHashSet("resources");
     }
 
     @Override
@@ -35,7 +37,7 @@ public class UserFilter implements Filter {
         }
 
         if (session.getAttribute("user") == null) {
-            if (permittedWithoutSignIn.contains(path)) {
+            if (permittedWithoutSignIn.contains(path) || resources.contains(path)) {
                 chain.doFilter(request, response);
             } else {
                 resp.sendRedirect(req.getContextPath() + "/welcome");

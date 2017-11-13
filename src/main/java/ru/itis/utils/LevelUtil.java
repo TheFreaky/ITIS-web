@@ -7,7 +7,7 @@ package ru.itis.utils;
  * @version v1.0
  */
 public class LevelUtil {
-    public static int getLvl(Long xp) {
+    public static Integer getLvl(Long xp) {
         return (int) ((Math.sqrt(625 + 100 * xp) - 25) / 50);
     }
 
