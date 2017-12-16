@@ -1,8 +1,10 @@
 package ru.itis.utils;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class DbWrapper {
     private static Connection conn;
@@ -26,17 +28,19 @@ public class DbWrapper {
     }
 
     private Connection getLocalConnect() {
-        final String DRIVER = "org.postgresql.Driver";
-        final String CONNECTION_URI = "jdbc:postgresql://localhost:5432/gym-app";
-        final String LOGIN = "postgres";
-        final String PASSWORD = "lolxaxlol";
-
         try {
+            Properties prop = new Properties();
+            prop.load(getClass().getClassLoader().getResourceAsStream("db.properties"));
+
+            final String DRIVER = prop.getProperty("driver");
+            final String CONNECTION_URI = prop.getProperty("url");
+            final String LOGIN = prop.getProperty("login");
+            final String PASSWORD = prop.getProperty("password");
+
             Class.forName(DRIVER);
             return DriverManager.getConnection(CONNECTION_URI, LOGIN, PASSWORD);
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (ClassNotFoundException | SQLException | IOException e) {
             throw new IllegalArgumentException(e);
         }
-
     }
 }

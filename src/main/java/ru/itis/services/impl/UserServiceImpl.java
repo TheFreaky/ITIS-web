@@ -1,4 +1,4 @@
-package ru.itis.services;
+package ru.itis.services.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -9,6 +9,7 @@ import ru.itis.dto.UserRegistrationForm;
 import ru.itis.dto.UserSettingForm;
 import ru.itis.dto.UserSignInForm;
 import ru.itis.models.User;
+import ru.itis.services.UserService;
 
 /**
  * 05.11.2017
@@ -59,11 +60,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void editUserData(UserSettingForm form, UserDto userDto) {
-        User user = userDao.find(userDto.getId());
+        User user = userDao.findById(userDto.getId());
         String hashPassword = encoder.encode(form.getPassword());
         user.setLogin(form.getLogin().toLowerCase());
         user.setPassword(hashPassword);
         userDao.update(user);
+    }
+
+    @Override
+    public void delete(UserDto userDto) {
+        userDao.delete(userDto.getId());
     }
 
 }

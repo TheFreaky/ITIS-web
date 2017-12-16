@@ -28,4 +28,5 @@ public class UserProfileDto {
     private Integer flexibilityProgress;
     private Boolean gender;
     private List<UserTraining> userTrainings;
+    private Long xpLastMonth;
 }

@@ -1,10 +1,10 @@
 package ru.itis.servlets;
 
-import ru.itis.dao.UserDaoJdbcImpl;
+import ru.itis.dao.impl.UserDaoJdbcImpl;
 import ru.itis.dto.UserDto;
 import ru.itis.dto.UserSettingForm;
 import ru.itis.services.UserService;
-import ru.itis.services.UserServiceImpl;
+import ru.itis.services.impl.UserServiceImpl;
 import ru.itis.utils.DbWrapper;
 import ru.itis.utils.ViewPathConfig;
 import ru.itis.validators.UserSettingFormValidator;
@@ -29,11 +29,12 @@ public class SettingServlet extends HttpServlet {
     private UserService service;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         service = new UserServiceImpl(new UserDaoJdbcImpl(DbWrapper.getConnection()));
         validator = new UserSettingFormValidator();
     }
 
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserSettingForm form = UserSettingForm.builder()
                 .login(req.getParameter("setting-username"))
@@ -56,6 +57,7 @@ public class SettingServlet extends HttpServlet {
         }
     }
 
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         RequestDispatcher dispatcher = req.getRequestDispatcher(ViewPathConfig.SETTING_PAGE);
         if (dispatcher != null) {

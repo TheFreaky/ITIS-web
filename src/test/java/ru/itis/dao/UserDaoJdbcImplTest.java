@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import ru.itis.dao.impl.UserDaoJdbcImpl;
 import ru.itis.models.Specialization;
 import ru.itis.models.User;
 import ru.itis.utils.DbWrapper;
@@ -22,13 +23,14 @@ public class UserDaoJdbcImplTest {
     private static UserDao userDao;
 
     @BeforeClass
-    public static void setUp() throws Exception {
+    public static void setUp() {
         userDao = new UserDaoJdbcImpl(DbWrapper.getConnection());
     }
 
     @AfterClass
-    public static void tearDown() throws Exception {
-        Lists.newArrayList("Save_test", "Save_test_error", "Update_test", "Save_test_enum", "Update_test_enum")
+    public static void tearDown() {
+        Lists.newArrayList("Save_test", "Save_test_error", "Update_test",
+                "Save_test_enum", "Update_test_enum", "Find_total_month_xp")
                 .forEach(s -> {
                     User user = userDao.findByLogin(s);
                     if (user != null) {
@@ -38,7 +40,7 @@ public class UserDaoJdbcImplTest {
     }
 
     @Test
-    public void save() throws Exception {
+    public void testSave() {
         User user = User.builder()
                 .name("Test")
                 .gender(true)
@@ -52,7 +54,7 @@ public class UserDaoJdbcImplTest {
 
 
     @Test(expected = IllegalArgumentException.class)
-    public void updateNegativeXp() throws Exception {
+    public void testUpdateNegativeXp() {
         User user = User.builder()
                 .name("Test")
                 .gender(true)
@@ -67,8 +69,8 @@ public class UserDaoJdbcImplTest {
     }
 
     @Test
-    public void find() throws Exception {
-        User user = userDao.find(1L);
+    public void testFind() {
+        User user = userDao.findById(1L);
         assertNotNull(user);
         assertNotNull(user.getId());
         assertNotNull(user.getLogin());
@@ -76,7 +78,7 @@ public class UserDaoJdbcImplTest {
     }
 
     @Test
-    public void update() throws Exception {
+    public void testUpdate() {
         User user = User.builder()
                 .name("Test")
                 .gender(true)
@@ -92,7 +94,7 @@ public class UserDaoJdbcImplTest {
     }
 
     @Test
-    public void updateWithEnum() throws Exception {
+    public void testUpdateWithEnum() {
         User user = User.builder()
                 .name("Test")
                 .gender(true)
@@ -108,7 +110,7 @@ public class UserDaoJdbcImplTest {
     }
 
     @Test
-    public void delete() throws Exception {
+    public void testDelete() {
         User user = User.builder()
                 .name("Test")
                 .gender(true)
@@ -122,7 +124,7 @@ public class UserDaoJdbcImplTest {
     }
 
     @Test
-    public void findAll() throws Exception {
+    public void testFindAll() {
         List<User> users = userDao.findAll();
         assertNotNull(users);
         assertTrue(users.size() > 0);
@@ -130,11 +132,23 @@ public class UserDaoJdbcImplTest {
     }
 
     @Test
-    public void findByLogin() throws Exception {
+    public void testFindByLogin() {
         User user = userDao.findByLogin("the#_freak");
         assertNotNull(user);
         assertNotNull(user.getId());
         assertTrue(user.getId().equals(1L));
     }
 
+    @Test
+    public void testFindTotalXpLastMonthById() {
+        User user = User.builder()
+                .name("Test")
+                .gender(true)
+                .login("Find_total_month_xp")
+                .password("qwerty123")
+                .build();
+        userDao.save(user);
+        long totalMonthXp = userDao.findTotalXpLastMonthById(user.getId());
+        assertEquals(0L, totalMonthXp);
+    }
 }

@@ -1,10 +1,10 @@
 package ru.itis.servlets;
 
-import ru.itis.dao.UserDaoJdbcImpl;
+import ru.itis.dao.impl.UserDaoJdbcImpl;
 import ru.itis.dto.UserDto;
 import ru.itis.dto.UserRegistrationForm;
 import ru.itis.services.UserService;
-import ru.itis.services.UserServiceImpl;
+import ru.itis.services.impl.UserServiceImpl;
 import ru.itis.utils.DbWrapper;
 import ru.itis.utils.ViewPathConfig;
 import ru.itis.validators.UserRegistrationFormValidator;
@@ -28,12 +28,13 @@ public class SignUpServlet extends HttpServlet {
     private UserService userService;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         userService = new UserServiceImpl(new UserDaoJdbcImpl(DbWrapper.getConnection()));
         validator = new UserRegistrationFormValidator();
     }
 
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.sendRedirect(req.getContextPath() + "/welcome");
     }
 

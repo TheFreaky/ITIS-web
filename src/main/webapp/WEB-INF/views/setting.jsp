@@ -115,6 +115,16 @@
                                value="Save">
                     </form>
 
+                    <br>
+                    <br>
+                    <br>
+                    <form method="POST" action="<c:url value="/delete"/>" class="form-horizontal bv-form"
+                          novalidate="novalidate">
+                        <input type="submit"
+                               class="center-block finish-button button button button-3d button-primary button-rounded btn_3d"
+                               value="Delete profile">
+                    </form>
+
                 </div>
             </div>
         </div>

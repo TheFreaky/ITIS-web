@@ -1,4 +1,4 @@
-package ru.itis.servlets;
+package ru.itis.services.impl;
 
 /**
  * 05.11.2017

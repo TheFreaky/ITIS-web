@@ -1,5 +1,6 @@
-package ru.itis.dao;
+package ru.itis.dao.impl;
 
+import ru.itis.dao.UserDao;
 import ru.itis.models.Specialization;
 import ru.itis.models.User;
 
@@ -10,22 +11,42 @@ import java.util.List;
 public class UserDaoJdbcImpl implements UserDao {
     private Connection connection;
 
-    private final static String SQL_INSERT = "INSERT INTO users (user_login, user_password, user_name, user_weight, " +
-            "user_height, user_gender) " +
-            "VALUES (?, ?, ?, ?, ?, ?)";
-    private final static String SQL_SELECT_ALL = "SELECT * FROM users";
-    private final static String SQL_SELECT_BY_LOGIN = "SELECT * FROM users WHERE user_login = ?";
-    private final static String SQL_SELECT_BY_ID = "SELECT * FROM users WHERE user_id = ?";
-    private final static String SQL_UPDATE = "UPDATE users SET (user_login, user_password, user_name, user_weight, " +
-            "user_height, user_specialization, user_xp, user_strength, user_stamina, user_flexibility, user_gender) = " +
-            "(?, ?, ?, ?, ?, ?::specialization, ?, ?, ?, ?, ?) WHERE user_id = ?";
-    private final static String SQL_DELETE = "DELETE FROM users WHERE user_id = ?";
-    private final static String SQL_UPDATE_XP = "UPDATE users SET (user_xp) = (user_xp + ?) WHERE user_id = ?";
+    private final static String SQL_INSERT =
+            "INSERT INTO app.users " +
+                    "(user_login, user_password, user_name, user_weight, user_height, user_gender) " +
+                    "VALUES (?, ?, ?, ?, ?, ?)";
+
+    private final static String SQL_SELECT_ALL =
+            "SELECT * " +
+                    "FROM app.users";
+
+    private final static String SQL_SELECT_BY_LOGIN =
+            "SELECT * " +
+                    "FROM app.users " +
+                    "WHERE user_login = ?";
+
+    private final static String SQL_SELECT_BY_ID =
+            "SELECT * " +
+                    "FROM app.users " +
+                    "WHERE user_id = ?";
+
+    private final static String SQL_UPDATE =
+            "UPDATE app.users " +
+                    "SET (user_login, user_password, user_name, user_weight, user_height, " +
+                    "user_specialization, user_xp, user_strength, user_stamina, user_flexibility, user_gender) = " +
+                    "(?, ?, ?, ?, ?, ?::app.specialization, ?, ?, ?, ?, ?) " +
+                    "WHERE user_id = ?";
+
+    private final static String SQL_DELETE =
+            "DELETE FROM app.users " +
+                    "WHERE user_id = ?";
+
+    private static final String SQL_SELECT_TOTAL_XP_LAST_MONTH =
+            "SELECT * FROM app.user_total_xp_last_month(?::INT)";
 
     public UserDaoJdbcImpl(Connection connection) {
         this.connection = connection;
     }
-
 
     public void save(User model) {
         try {
@@ -54,7 +75,7 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     @Override
-    public User find(Long id) {
+    public User findById(Long id) {
         try {
             PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_BY_ID);
             stmt.setLong(1, id);
@@ -202,15 +223,24 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     @Override
-    public void updateXp(User user, Integer xp) {
+    public Long findTotalXpLastMonthById(Long id) {
+
         try {
             PreparedStatement stmt =
-                    connection.prepareStatement(SQL_UPDATE_XP);
-            stmt.setInt(1, xp);
-            stmt.setLong(2, user.getId());
-            stmt.execute();
+                    connection.prepareStatement(SQL_SELECT_TOTAL_XP_LAST_MONTH);
+
+            stmt.setLong(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (!rs.next()) {
+                return null;
+            }
+
+            return rs.getLong("xp");
         } catch (SQLException e) {
             throw new IllegalArgumentException(e);
         }
     }
+
+
 }

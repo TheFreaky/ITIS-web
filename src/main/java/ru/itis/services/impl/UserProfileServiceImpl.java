@@ -1,4 +1,4 @@
-package ru.itis.services;
+package ru.itis.services.impl;
 
 import com.google.common.collect.ImmutableMap;
 import ru.itis.dao.UserDao;
@@ -8,7 +8,7 @@ import ru.itis.dto.UserProfileDto;
 import ru.itis.dto.UserProfileForm;
 import ru.itis.models.User;
 import ru.itis.models.UserTraining;
-import ru.itis.servlets.LevelService;
+import ru.itis.services.UserProfileService;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +30,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public UserProfileDto getUserProfile(Long id) {
-        User user = userDao.find(id);
+        User user = userDao.findById(id);
         List<UserTraining> userTrainings = userTrainingDao.findByUserId(id);
 
         Long xp = user.getXp();
@@ -59,14 +59,14 @@ public class UserProfileServiceImpl implements UserProfileService {
                 .flexibilityProgress((Integer) flexibilityDetails.get("progress"))
                 .gender(user.getGender())
                 .userTrainings(userTrainings)
+                .xpLastMonth(userDao.findTotalXpLastMonthById(id))
                 .build();
     }
 
 
     @Override
     public UserDto editUserProfile(UserProfileForm profile, UserDto userDto) {
-        User user = userDao.find(userDto.getId());
-        user.setName(profile.getName());
+        User user = userDao.findById(userDto.getId());
         user.setName(profile.getName());
         user.setWeight(Float.valueOf(profile.getWeight()));
         user.setHeight(Short.valueOf(profile.getHeight()));

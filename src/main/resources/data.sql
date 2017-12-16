@@ -1,0 +1,86 @@
+INSERT INTO app.exercises
+(exercise_id, exercise_name, exercise_complexity, exercise_type)
+VALUES (5, 'Kek', 'Beginner', 'Strength'),
+  (6, 'Lol', 'Advanced', 'Flexibility'),
+  (8, 'Lying Front Kicks', 'Beginner', 'Flexibility'),
+  (9, 'Tricep Stretch', 'Beginner', 'Flexibility'),
+  (10, 'Lying Leg Raise', 'Beginner', 'Flexibility'),
+  (11, 'Lying Rear Shoulder Fly With Cans Kicks', 'Beginner', 'Strength'),
+  (7, 'Close Grip Pushups', 'Beginner', 'Strength'),
+  (12, 'Elliptical Training', 'Medium', 'Agility'),
+  (13, 'Walking', 'Beginner', 'Agility'),
+  (14, 'Bicycling', 'Medium', 'Agility'),
+  (15, 'Treadmill walking', 'Medium', 'Agility');
+
+INSERT INTO app.trainings (training_id, training_name, training_description,
+                           training_xp, training_min_lvl, training_type, training_complexity)
+VALUES (593, 'Exercise ball workout', 'The exercise, Swiss or stability ball is an extremely useful piece of workout equipment that can be used at your gym or in the comfort and privacy of your home. Essential, the exercise ball is an elastic round ball filled with air that usually ranges from 35 to 85cm in diameter. Besides the use in exercise, it is also extremely helpful for physiotherapy and other forms of training. The main benefit of exercising with the exercise ball is that more muscles are engaged in comparison to sitting on a flat sturdy surface - more specifically your core muscles. Due to the fact that you are constantly using these muscles for balance, over time they strengthen and become more effective. Our custom programs are available in three difficulty levels allowing everyone to benefit from our plan.', 75, 2, 'Common', 'Beginner'),
+  (594, 'Circuit training workout', 'Circuit training is perhaps one of the most effective forms of quick and efficient fitness that holds many benefits that other workouts do not, most notably your cardiovascular health. In terms of body image, it''s is excellent for body fat loss and toning - for both men and women. Our custom programs or a form of condition exercise that combines cardiovascular machines with resistance exercises. In most cases it is a high intensity session that aims at minimal rest for the duration of your complete circuit, one exercise is followed by another. We have created our program to be effective for beginners as well as advanced individuals - so everyone is challenged and keeps their success rates at a maximum. Remember, circuit training is aimed at strength and muscular endurance, not for building lean muscle mass.', 150, 4, 'Agility', 'Beginner'),
+  (595, 'First time in the gym', 'One of the biggest obstacles for most first timers to the fitness lifestyle is entering a gym, especially if they are not comfortable in crowds or have a lower self esteem. We understand, everyone has been in that position. Our first time gym workout plan is created specifically for those that want to take that step but are unsure of what to do once they are there. We make it very simple without our introductory workout. We will lead you through each major muscle group and ask you to perform one or two exercises with as many sets. The exercises are commonly machine based so that the movement is very basic and will allow you to experience an exercise for each muscle. We send you in with a plan and you will leave with the basic knowledge of the most common exercises and confidence to return and move forward. This plan is also ideal for those returning from an extended layoff to get their muscles accustomed to resistance training at an introductory rate.', 50, 3, 'Common', 'Beginner'),
+  (597, 'Gym', 'We have provided you with the tools you can use to create your personalized workout at your local gym. Whether you are aiming to lose unwanted weight, tone or add some new muscle size this program is for you. Utilizing the many different variations of fitness machines and free weights will come to your advantage. You are in control over variables such as how many days and which days you are available for exercise, and which exercise equipment you have available. We make it very simple by planning out each day, exercise, total number of repetitions and sets to help you succeed with your goal. This is your personalized fitness plan - designed specifically your requirements. Best of luck and be sure to stay committed.', 170, 8, 'Common', 'Beginner'),
+  (3, 'Test', 'test', 1, 10, 'Strength', 'Medium'),
+  (436, 'Home workout', 'Perhaps the most intimidating factor when deciding to add some exercise or fitness to your life can be stepping foot inside an actual gym, this is one primary reason we at FreeTrainers have created a complete full body workout plan that can be done in the comfort of your living room. Get all the benefits of exercise with as little as some floor space and a pair of dumbbells - or a pair of food cans from your cupboard. Our workouts will be custom fit to your personal goals and fitness levels. These workouts are also an excellent option for those that cannot make it to the gym, travel frequently or just want to try an alternative workout plan that works.', 50, 0, 'Common', 'Beginner'),
+  (560, 'Cardio workout', 'Cardiovascular fitness is perhaps the most beneficial form of exercise that anyone can do. Cardio, for short is often overlooked and should be a daily aspect of everyone''s life. The majority of individuals use cardio for the calorie burning effects, but there are many other benefits that you need to be aware of. The most beneficial aspect is that of your heart health, which aids in keeping you fit and healthy. Others include an improved metabolism, fighting depression and fatigue, enhancing recovery times as well as a healthy management of diabetes - to name a few. Our custom created cardio plans take in account variables such as MHR and THR to truly provide you with directions that will be specifically for you. We also take into consideration your goals such as endurance training, fat loss and more. Take full advantage of our personalized plans to help you get the results you seek.', 75, 1, 'Agility', 'Medium'),
+  (2, 'Hard', 'Too hard', 300, 7, 'Agility', 'Advanced'),
+  (1, 'Ez', 'So ez', 100, 5, 'Common', 'Beginner'),
+  (598, 'Mass & strength ', 'We cater to all individuals, including strength, power lifting and bodybuilding athletes. Our signature 12 week strength and muscle mass building workout program is designed for advanced athletes to help them significantly improve their raw strength and muscle mass results. This plan consists of a 14 week period that is split up into four distinct areas of 4 week, 4 weeks, 4 weeks and 2 weeks of complete rest. Each 4 week segment is specifically designed to keep stimulating your muscle tissue from all angles to keep progress in motion. Each phase is changed accordingly as to keep you from hitting a plateau. By the end of the program you will see much improved results and we highly suggest that you take a complete 2 weeks away from resistance training to allow your body the required recovery time. Following this, you can repeat the plan. We also stress that this is for advanced athletes only and due to the low repetition and advanced movements you need to always put safety along with proper warm-ups and stretches first.', 300, 9, 'Common', 'Advanced');
+
+
+
+INSERT INTO app.trainings_exercises (id, training_id, exercise_id) VALUES (2, 1, 5),
+  (3, 1, 6),
+  (4, 436, 7),
+  (5, 436, 8),
+  (6, 436, 9),
+  (7, 436, 10),
+  (8, 436, 11),
+  (9, 560, 12),
+  (10, 560, 13),
+  (11, 560, 14),
+  (12, 560, 15);
+
+INSERT INTO app.users (user_id, user_login, user_password, user_name, user_weight,
+                       user_height, user_specialization, user_xp, user_strength,
+                       user_stamina, user_flexibility, user_gender)
+VALUES (2, 'maxim@mail.ru', '$2a$10$yAkWEZpb5nI/uSNN1VkB3.sDTnc3G2aQ2Y1mSGAlor5E50rVQcNXq', 'Max', 0, 0, 'Common', 5940, 0, 0, 0, null),
+  (308, 'm@m.ru', '$2a$10$tyQsSoC9zwKq/meXIu9.IeF8CoKu/Sd7u8s.Ae9lCNYMbuNDjXgiq', 'Max', 0, 0, 'Common', 108751, 102, 79, 42, true),
+  (813, 'max@m.ru', '$2a$10$Jm7PvUTchBH9XX1b/60S4.aX54z8Pb2KgFIKuUEevo30xpI6nwhgC', 'Maxim', 0, 0, 'Common', 6000, 0, 0, 0, false),
+  (3, 'madssad@mail.ru', '$2a$10$RnbnUyoqbicaDeOsFJ0ioOQhvzIh9aC3ncGJ3KN0QayAbmJEE5hMm', 'Maxim', 0, 0, 'Common', 6000, 0, 0, 0, null),
+  (7, 'oleg@mail.ru', '$2a$10$iMSP3A.Mxejc1SUi6wbg4eTBbw5wR7r4i0ECiAOf8vTv8wxZRWvxq', 'Oleg', 0, 0, 'Common', 6000, 0, 0, 0, null),
+  (8, 'a@a.a', '$2a$10$LVBP5bOd4Uska9uh6OnYXOsR4CZsCyFCxvHvxm/ft9W1pYZXC0VHa', 'A', 0, 0, 'Common', 6000, 0, 0, 0, null),
+  (1269, 'asdsa@mail.ru', '$2a$10$.zHwFHZOdGSZnrRfE/df2O6xouyz7V29vYJOh.iHCzQ5mcKE3tCx.', 'Oleg', 0, 0, 'Common', 0, 0, 0, 0, null),
+  (8, 'danyaka@gmail.com', '$2a$10$iGktKdtDuSoQV01zX5EzauQlV/106BB6PIaZTbNwSKBOS3UG4gEWq', 'Danil', 0, 0, 'Common', 0, 0, 0, 0, null),
+  (8, 'mars@ya.ru', '$2a$10$/CKfAjsBBn6B3lvVeEh1mu3ZQAzZhZon/wr/HX/8fo0l.UXi3ZGje', 'Marsel', 0, 0, 'Common', 0, 0, 0, 0, null),
+  (8, 'kirilov4@mail.ru', '$2a$10$UNyKFUGM3mwlqoO2lerAO.g/QkQ3CE58aN/XMFcEStKITgHhIU77y', 'Kiril', 0, 0, 'Common', 0, 0, 0, 0, null);
+
+INSERT INTO app.users_trainings (id, user_id, training_id, date, complete_percent)
+VALUES (700, 308, 1, '2017-12-16 00:00:00.000000', 0),
+  (701, 308, 1, '2017-12-16 00:00:00.000000', 100),
+  (702, 308, 1, '2017-12-16 00:00:00.000000', 100),
+  (703, 308, 1, '2017-12-16 00:00:00.000000', 50),
+  (704, 308, 1, '2017-12-16 00:00:00.000000', 100),
+  (1, 2, 1, '2017-10-24 23:08:38.350000', 10),
+  (328, 308, 1, '2017-11-08 00:00:00.000000', 50),
+  (329, 308, 1, '2017-11-08 00:00:00.000000', 20),
+  (330, 308, 1, '2017-11-08 00:00:00.000000', 33),
+  (331, 308, 1, '2017-11-08 00:00:00.000000', 56),
+  (336, 308, 1, '2017-11-08 00:00:00.000000', 34),
+  (656, 308, 1, '2017-11-13 00:00:00.000000', 6),
+  (345, 308, 1, '2017-11-08 00:00:00.000000', 4),
+  (350, 308, 1, '2017-11-08 00:00:00.000000', 3),
+  (351, 308, 1, '2017-11-08 00:00:00.000000', 34),
+  (352, 308, 1, '2017-11-08 00:00:00.000000', 34),
+  (353, 308, 1, '2017-11-08 00:00:00.000000', 82),
+  (627, 308, 1, '2017-11-13 00:00:00.000000', 43),
+  (628, 308, 2, '2017-11-13 00:00:00.000000', 67),
+  (629, 308, 2, '2017-11-13 00:00:00.000000', 89),
+  (630, 308, 2, '2017-11-13 00:00:00.000000', 90),
+  (631, 308, 436, '2017-11-13 00:00:00.000000', 23),
+  (318, 308, 1, '2017-11-08 00:00:00.000000', 65),
+  (319, 308, 1, '2017-11-08 00:00:00.000000', 87),
+  (366, 308, 1, '2017-11-11 00:00:00.000000', 80),
+  (669, 308, 1, '2017-11-11 00:00:00.000000', 60),
+  (731, 308, 1, '2017-12-17 00:00:00.000000', 100),
+  (732, 308, 1, '2017-12-17 00:00:00.000000', 100),
+  (733, 308, 3, '2017-12-17 00:00:00.000000', 100),
+  (734, 308, 2, '2017-12-17 00:00:00.000000', 100);

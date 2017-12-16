@@ -1,11 +1,16 @@
 package ru.itis.servlets;
 
-import ru.itis.dao.*;
+import ru.itis.dao.TrainingDao;
+import ru.itis.dao.UserDao;
+import ru.itis.dao.UserTrainingDao;
+import ru.itis.dao.impl.TrainingDaoJdbcImpl;
+import ru.itis.dao.impl.UserDaoJdbcImpl;
+import ru.itis.dao.impl.UserTrainingDaoJdbcImpl;
 import ru.itis.dto.UserDto;
 import ru.itis.dto.UserProfileDto;
 import ru.itis.dto.UserProfileForm;
 import ru.itis.services.UserProfileService;
-import ru.itis.services.UserProfileServiceImpl;
+import ru.itis.services.impl.UserProfileServiceImpl;
 import ru.itis.utils.DbWrapper;
 import ru.itis.utils.ViewPathConfig;
 import ru.itis.validators.UserProfileFormValidator;
@@ -33,7 +38,7 @@ public class UserProfileServlet extends HttpServlet {
     private Validator<UserProfileForm> validator;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         Connection conn = DbWrapper.getConnection();
         UserDao userDao = new UserDaoJdbcImpl(conn);
         TrainingDao trainingDao = new TrainingDaoJdbcImpl(conn);
@@ -43,6 +48,7 @@ public class UserProfileServlet extends HttpServlet {
         validator = new UserProfileFormValidator();
     }
 
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserProfileForm form = UserProfileForm.builder()
                 .name(req.getParameter("edit-name"))
@@ -66,6 +72,7 @@ public class UserProfileServlet extends HttpServlet {
         }
     }
 
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserDto userDto = (UserDto) req.getSession().getAttribute("user");
         UserProfileDto userProfile = userProfileService.getUserProfile(userDto.getId());

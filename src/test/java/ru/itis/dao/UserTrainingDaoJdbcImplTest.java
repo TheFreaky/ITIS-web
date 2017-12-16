@@ -3,6 +3,9 @@ package ru.itis.dao;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import ru.itis.dao.impl.TrainingDaoJdbcImpl;
+import ru.itis.dao.impl.UserDaoJdbcImpl;
+import ru.itis.dao.impl.UserTrainingDaoJdbcImpl;
 import ru.itis.models.Training;
 import ru.itis.models.User;
 import ru.itis.models.UserTraining;
@@ -26,7 +29,7 @@ public class UserTrainingDaoJdbcImplTest {
     private static UserDao userDao;
 
     @BeforeClass
-    public static void setUp() throws Exception {
+    public static void setUp() {
         Connection conn = DbWrapper.getConnection();
         userDao = new UserDaoJdbcImpl(conn);
         userTrainingDao = new UserTrainingDaoJdbcImpl(conn, new TrainingDaoJdbcImpl(conn), userDao);
@@ -39,7 +42,7 @@ public class UserTrainingDaoJdbcImplTest {
     }
 
     @AfterClass
-    public static void tearDown() throws Exception {
+    public static void tearDown() {
         userTrainingDao.findByUserId(user.getId())
                 .forEach(userTraining ->
                         userTrainingDao.delete(userTraining.getId())
@@ -48,13 +51,14 @@ public class UserTrainingDaoJdbcImplTest {
     }
 
     @Test
-    public void save() throws Exception {
+    public void testSave() {
         UserTraining userTraining = UserTraining.builder()
                 .date(LocalDate.now())
                 .user(user)
                 .training(Training.builder()
                         .id(1)
                         .build())
+                .completePercent(100)
                 .build();
         userTrainingDao.save(userTraining);
         assertNotNull(userTraining);
@@ -62,8 +66,8 @@ public class UserTrainingDaoJdbcImplTest {
     }
 
     @Test
-    public void find() throws Exception {
-        UserTraining userTraining = userTrainingDao.find(1);
+    public void testFind() {
+        UserTraining userTraining = userTrainingDao.findById(1);
         assertNotNull(userTraining);
         assertNotNull(userTraining.getId());
         assertNotNull(userTraining.getDate());
@@ -76,13 +80,14 @@ public class UserTrainingDaoJdbcImplTest {
     }
 
     @Test
-    public void update() throws Exception {
+    public void testUpdate() {
         UserTraining userTraining = UserTraining.builder()
                 .date(LocalDate.now())
                 .user(user)
                 .training(Training.builder()
-                        .id(2)
+                        .id(1)
                         .build())
+                .completePercent(100)
                 .build();
         userTrainingDao.save(userTraining);
 
@@ -90,7 +95,7 @@ public class UserTrainingDaoJdbcImplTest {
         userTraining.setDate(date);
         userTrainingDao.update(userTraining);
 
-        UserTraining updated = userTrainingDao.find(userTraining.getId());
+        UserTraining updated = userTrainingDao.findById(userTraining.getId());
         assertNotNull(updated);
         assertNotNull(updated.getId());
         assertNotNull(updated.getDate());
@@ -98,22 +103,23 @@ public class UserTrainingDaoJdbcImplTest {
     }
 
     @Test
-    public void delete() throws Exception {
+    public void testDelete() {
         UserTraining userTraining = UserTraining.builder()
                 .date(LocalDate.now())
                 .user(user)
                 .training(Training.builder()
-                        .id(3)
+                        .id(1)
                         .build())
+                .completePercent(100)
                 .build();
         userTrainingDao.save(userTraining);
         userTrainingDao.delete(userTraining.getId());
-        UserTraining deletedUserTraining = userTrainingDao.find(userTraining.getId());
+        UserTraining deletedUserTraining = userTrainingDao.findById(userTraining.getId());
         assertNull(deletedUserTraining);
     }
 
     @Test
-    public void findAll() throws Exception {
+    public void testFindAll() {
         List<UserTraining> trainings = userTrainingDao.findAll();
         assertNotNull(trainings);
         assertTrue(trainings.size() > 0);
@@ -121,13 +127,14 @@ public class UserTrainingDaoJdbcImplTest {
     }
 
     @Test
-    public void findByUser() throws Exception {
+    public void testFindByUser() {
         UserTraining userTraining = UserTraining.builder()
                 .date(LocalDate.now())
                 .user(user)
                 .training(Training.builder()
-                        .id(4)
+                        .id(1)
                         .build())
+                .completePercent(100)
                 .build();
         userTrainingDao.save(userTraining);
 
@@ -136,5 +143,4 @@ public class UserTrainingDaoJdbcImplTest {
         assertTrue(trainings.size() > 0);
         assertNotNull(trainings.get(0));
     }
-
 }

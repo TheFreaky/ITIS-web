@@ -20,4 +20,5 @@ public class UserTraining {
     private LocalDate date;
     private User user;
     private Training training;
+    private Integer completePercent;
 }

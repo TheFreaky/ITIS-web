@@ -16,6 +16,8 @@ import java.io.IOException;
  * @version v1.0
  */
 public class WelcomeServlet extends HttpServlet {
+
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher(ViewPathConfig.WELCOME_PAGE);
         if (dispatcher != null) {

@@ -11,7 +11,7 @@ import ru.itis.dto.UserProfileForm;
  * @version v1.0
  */
 public interface UserProfileService {
-    UserProfileDto getUserProfile(Long id);
 
+    UserProfileDto getUserProfile(Long id);
     UserDto editUserProfile(UserProfileForm profile, UserDto userDto);
 }

@@ -1,10 +1,15 @@
 package ru.itis.servlets;
 
-import ru.itis.dao.*;
+import ru.itis.dao.TrainingDao;
+import ru.itis.dao.UserDao;
+import ru.itis.dao.UserTrainingDao;
+import ru.itis.dao.impl.TrainingDaoJdbcImpl;
+import ru.itis.dao.impl.UserDaoJdbcImpl;
+import ru.itis.dao.impl.UserTrainingDaoJdbcImpl;
 import ru.itis.dto.TrainingDto;
 import ru.itis.dto.UserDto;
 import ru.itis.services.TrainingService;
-import ru.itis.services.TrainingServiceImpl;
+import ru.itis.services.impl.TrainingServiceImpl;
 import ru.itis.utils.DbWrapper;
 import ru.itis.utils.ViewPathConfig;
 
@@ -27,7 +32,7 @@ public class TrainingsServlet extends HttpServlet {
     private TrainingService trainingService;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         Connection conn = DbWrapper.getConnection();
         UserDao userDao = new UserDaoJdbcImpl(conn);
         TrainingDao trainingDao = new TrainingDaoJdbcImpl(conn);
@@ -35,6 +40,7 @@ public class TrainingsServlet extends HttpServlet {
         trainingService = new TrainingServiceImpl(userDao, trainingDao, userTrainingDao);
     }
 
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserDto userDto = (UserDto) req.getSession().getAttribute("user");
 

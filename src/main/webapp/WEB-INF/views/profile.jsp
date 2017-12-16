@@ -280,6 +280,14 @@
                                         <div class="table-responsive">
                                             <table class="table table-responsive">
                                                 <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <b><i>Заработано опыта за последний месяц</i></b>
+                                                    </td>
+                                                    <td>
+                                                        ${userProfile.xpLastMonth}
+                                                    </td>
+                                                </tr>
                                                 <c:forEach items="${userProfile.userTrainings}" var="userTraining">
                                                     <tr>
                                                         <td>

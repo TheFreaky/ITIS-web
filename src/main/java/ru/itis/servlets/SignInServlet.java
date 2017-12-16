@@ -1,10 +1,10 @@
 package ru.itis.servlets;
 
-import ru.itis.dao.UserDaoJdbcImpl;
+import ru.itis.dao.impl.UserDaoJdbcImpl;
 import ru.itis.dto.UserDto;
 import ru.itis.dto.UserSignInForm;
 import ru.itis.services.UserService;
-import ru.itis.services.UserServiceImpl;
+import ru.itis.services.impl.UserServiceImpl;
 import ru.itis.utils.DbWrapper;
 import ru.itis.utils.ViewPathConfig;
 import ru.itis.validators.UserSignInFormValidator;
@@ -28,16 +28,17 @@ public class SignInServlet extends HttpServlet {
     private Validator<UserSignInForm> validator;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         userService = new UserServiceImpl(new UserDaoJdbcImpl(DbWrapper.getConnection()));
         validator = new UserSignInFormValidator();
     }
 
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.sendRedirect(req.getContextPath() + "/welcome");
     }
 
-
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserSignInForm form = UserSignInForm.builder()
                 .password(req.getParameter("signin-password"))

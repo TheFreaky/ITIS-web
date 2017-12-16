@@ -1,5 +1,8 @@
-package ru.itis.dao;
+package ru.itis.dao.impl;
 
+import ru.itis.dao.TrainingDao;
+import ru.itis.dao.UserDao;
+import ru.itis.dao.UserTrainingDao;
 import ru.itis.models.User;
 import ru.itis.models.UserTraining;
 
@@ -18,14 +21,35 @@ public class UserTrainingDaoJdbcImpl implements UserTrainingDao {
     private TrainingDao trainingDao;
     private UserDao userDao;
 
-    private final static String SQL_INSERT = "INSERT INTO users_trainings (user_id, training_id, date) " +
-            "VALUES (?, ?, ?)";
-    private final static String SQL_SELECT_ALL = "SELECT * FROM users_trainings";
-    private final static String SQL_SELECT_BY_USER = "SELECT * FROM users_trainings WHERE user_id = ? ORDER BY date DESC LIMIT 10";
-    private final static String SQL_SELECT_BY_ID = "SELECT * FROM users_trainings WHERE id = ?";
-    private final static String SQL_UPDATE = "UPDATE users_trainings SET (user_id, training_id, date) = " +
-            "(?, ?, ?) WHERE id = ?";
-    private final static String SQL_DELETE = "DELETE FROM users_trainings WHERE id = ?";
+    private final static String SQL_INSERT =
+            "INSERT INTO app.users_trainings " +
+                    "(user_id, training_id, date, complete_percent) " +
+                    "VALUES (?, ?, ?, ?)";
+
+    private final static String SQL_SELECT_ALL =
+            "SELECT * " +
+                    "FROM app.users_trainings";
+
+    private final static String SQL_SELECT_BY_USER =
+            "SELECT * " +
+                    "FROM app.users_trainings " +
+                    "WHERE user_id = ? " +
+                    "ORDER BY date DESC " +
+                    "LIMIT 10";
+
+    private final static String SQL_SELECT_BY_ID =
+            "SELECT * " +
+                    "FROM app.users_trainings " +
+                    "WHERE id = ?";
+
+    private final static String SQL_UPDATE =
+            "UPDATE app.users_trainings " +
+                    "SET (user_id, training_id, date, complete_percent) = " +
+                    "(?, ?, ?, ?) WHERE id = ?";
+
+    private final static String SQL_DELETE =
+            "DELETE FROM app.users_trainings " +
+                    "WHERE id = ?";
 
     public UserTrainingDaoJdbcImpl(Connection connection, TrainingDao trainingDao, UserDao userDao) {
         this.connection = connection;
@@ -50,6 +74,8 @@ public class UserTrainingDaoJdbcImpl implements UserTrainingDao {
                 stmt.setObject(2, null);
             }
             stmt.setDate(3, Date.valueOf(model.getDate()));
+            stmt.setInt(4, model.getCompletePercent());
+
             stmt.executeUpdate();
 
             ResultSet resultSet = stmt.getGeneratedKeys();
@@ -58,12 +84,15 @@ public class UserTrainingDaoJdbcImpl implements UserTrainingDao {
                 model.setId(id);
             }
         } catch (SQLException e) {
+            if (e.getSQLState().startsWith("23")) { //integrity constraint violation
+                throw new IllegalArgumentException("Complete percent can't be less than zero and more than 100.", e);
+            }
             throw new IllegalArgumentException(e);
         }
     }
 
     @Override
-    public UserTraining find(Integer id) {
+    public UserTraining findById(Integer id) {
         try {
             PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_BY_ID);
             stmt.setLong(1, id);
@@ -76,8 +105,9 @@ public class UserTrainingDaoJdbcImpl implements UserTrainingDao {
             return UserTraining.builder()
                     .id(rs.getInt("id"))
                     .date(rs.getDate("date").toLocalDate())
-                    .user(userDao.find(rs.getLong("user_id")))
-                    .training(trainingDao.find(rs.getInt("training_id")))
+                    .user(userDao.findById(rs.getLong("user_id")))
+                    .training(trainingDao.findById(rs.getInt("training_id")))
+                    .completePercent(rs.getInt("complete_percent"))
                     .build();
 
         } catch (SQLException e) {
@@ -93,9 +123,13 @@ public class UserTrainingDaoJdbcImpl implements UserTrainingDao {
             stmt.setLong(1, model.getUser().getId());
             stmt.setInt(2, model.getTraining().getId());
             stmt.setDate(3, Date.valueOf(model.getDate()));
-            stmt.setInt(4, model.getId());
+            stmt.setInt(4, model.getCompletePercent());
+            stmt.setInt(5, model.getId());
             stmt.execute();
         } catch (SQLException e) {
+            if (e.getSQLState().startsWith("23")) { //integrity constraint violation
+                throw new IllegalArgumentException("Complete percent can't be less than zero and more than 100.", e);
+            }
             throw new IllegalArgumentException(e);
         }
     }
@@ -124,8 +158,9 @@ public class UserTrainingDaoJdbcImpl implements UserTrainingDao {
                         UserTraining.builder()
                                 .id(rs.getInt("id"))
                                 .date(rs.getDate("date").toLocalDate())
-                                .user(userDao.find(rs.getLong("user_id")))
-                                .training(trainingDao.find(rs.getInt("training_id")))
+                                .user(userDao.findById(rs.getLong("user_id")))
+                                .training(trainingDao.findById(rs.getInt("training_id")))
+                                .completePercent(rs.getInt("complete_percent"))
                                 .build()
                 );
             }
@@ -147,14 +182,15 @@ public class UserTrainingDaoJdbcImpl implements UserTrainingDao {
             User user = null;
             while (rs.next()) {
                 if (user == null) {
-                    user = userDao.find(rs.getLong("user_id"));
+                    user = userDao.findById(rs.getLong("user_id"));
                 }
                 userTrainings.add(
                         UserTraining.builder()
                                 .id(rs.getInt("id"))
                                 .date(rs.getDate("date").toLocalDate())
                                 .user(user)
-                                .training(trainingDao.find(rs.getInt("training_id")))
+                                .training(trainingDao.findById(rs.getInt("training_id")))
+                                .completePercent(rs.getInt("complete_percent"))
                                 .build()
                 );
             }

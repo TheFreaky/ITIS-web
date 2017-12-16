@@ -12,9 +12,9 @@ import ru.itis.dto.UserSignInForm;
  * @version v1.0
  */
 public interface UserService {
+
     UserDto register(UserRegistrationForm user);
-
     UserDto signIn(UserSignInForm user);
-
     void editUserData(UserSettingForm form, UserDto userDto);
+    void delete(UserDto userDto);
 }

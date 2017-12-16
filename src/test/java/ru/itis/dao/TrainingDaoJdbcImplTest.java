@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import ru.itis.dao.impl.TrainingDaoJdbcImpl;
 import ru.itis.models.Complexity;
 import ru.itis.models.Training;
 import ru.itis.utils.DbWrapper;
@@ -22,12 +23,12 @@ public class TrainingDaoJdbcImplTest {
     private static TrainingDao trainingDao;
 
     @BeforeClass
-    public static void setUp() throws Exception {
+    public static void setUp() {
         trainingDao = new TrainingDaoJdbcImpl(DbWrapper.getConnection());
     }
 
     @AfterClass
-    public static void tearDown() throws Exception {
+    public static void tearDown() {
         Lists.newArrayList("TestSave", "TestSaveNoEx", "TestUpdate")
                 .forEach(s -> {
                     Training training = trainingDao.findByName(s);
@@ -38,7 +39,7 @@ public class TrainingDaoJdbcImplTest {
     }
 
     @Test
-    public void save() throws Exception {
+    public void testSave() {
         Training training = Training.builder()
                 .name("TestSave")
                 .description("test")
@@ -52,7 +53,7 @@ public class TrainingDaoJdbcImplTest {
     }
 
     @Test
-    public void findWithoutExercises() throws Exception {
+    public void testFindWithoutExercises() {
         Training training = Training.builder()
                 .name("TestSaveNoEx")
                 .description("test")
@@ -61,7 +62,7 @@ public class TrainingDaoJdbcImplTest {
                 .complexity(Complexity.Advanced)
                 .build();
         trainingDao.save(training);
-        training = trainingDao.find(training.getId());
+        training = trainingDao.findById(training.getId());
         assertNotNull(training);
         assertNotNull(training.getId());
         assertNotNull(training.getName());
@@ -73,15 +74,15 @@ public class TrainingDaoJdbcImplTest {
     }
 
     @Test
-    public void findWithExercises() throws Exception {
-        Training training = trainingDao.find(1);
+    public void testFindWithExercises() {
+        Training training = trainingDao.findById(1);
         assertNotNull(training);
         assertNotNull(training.getExercises());
         assertTrue(training.getExercises().size() == 2);
     }
 
     @Test
-    public void update() throws Exception {
+    public void testUpdate() {
         Training training = Training.builder()
                 .name("TestUpdate")
                 .description("test")
@@ -98,7 +99,7 @@ public class TrainingDaoJdbcImplTest {
     }
 
     @Test
-    public void delete() throws Exception {
+    public void testDelete() {
         Training training = Training.builder()
                 .name("TestDelete")
                 .description("test")
@@ -113,7 +114,7 @@ public class TrainingDaoJdbcImplTest {
     }
 
     @Test
-    public void findAll() throws Exception {
+    public void testFindAll() {
         List<Training> trainings = trainingDao.findAll();
         assertNotNull(trainings);
         assertTrue(trainings.size() > 0);
@@ -121,7 +122,7 @@ public class TrainingDaoJdbcImplTest {
     }
 
     @Test
-    public void findByName() throws Exception {
+    public void testFindByName() {
         Training training = trainingDao.findByName("Test");
         assertNotNull(training);
         assertNotNull(training.getId());

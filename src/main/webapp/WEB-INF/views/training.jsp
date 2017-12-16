@@ -48,9 +48,9 @@
             display: none;
         }
 
-        .content {
-            height: 90.5vh;
-        }
+        /*.content {*/
+            /*height: 90.5vh;*/
+        /*}*/
 
         .train .property {
             padding: 1em 0 4em 0;
